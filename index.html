@@ -1,141 +1,187 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
-
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <title>QR Check-in | วิทยาลัยเทคโนโลยีนครขอนแก่น</title>
+  <meta
+    name="theme-color"
+    content="#24115f"
+  >
 
-  <!-- QR Scanner Library -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <title>
+    ระบบเช็คชื่อนักเรียน นักศึกษา
+  </title>
+
+  <!-- QR SCANNER LIBRARY -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 
   <style>
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
+    html,
     body {
-
       margin: 0;
-
-      min-height: 100vh;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
 
       font-family:
-        Arial,
         "Noto Sans Thai",
+        "Tahoma",
+        Arial,
         sans-serif;
 
-      color: #ffffff;
-
       background:
-        radial-gradient(
-          circle at 10% 10%,
-          rgba(139,92,246,.65),
-          transparent 35%
-        ),
-
-        radial-gradient(
-          circle at 90% 90%,
-          rgba(37,99,235,.65),
-          transparent 35%
-        ),
-
         linear-gradient(
           135deg,
-          #312e81,
-          #4c1d95,
-          #1e3a8a
+          #071a52 0%,
+          #1b1970 35%,
+          #3b1b83 70%,
+          #641fa0 100%
         );
 
-      padding: 15px;
-
+      color: #ffffff;
     }
 
 
-    .container {
+    body {
+      min-height: 100vh;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+
+    /* ==============================
+       MAIN CONTAINER
+       ============================== */
+
+    .app {
 
       width: 100%;
+      max-width: 520px;
 
-      max-width: 600px;
+      margin: 0 auto;
 
-      margin: auto;
+      min-height: calc(100vh - 32px);
 
+      display: flex;
+      flex-direction: column;
     }
 
+
+    /* ==============================
+       HEADER
+       ============================== */
 
     .header {
 
       text-align: center;
 
-      padding: 10px 5px 18px;
+      padding:
+        18px
+        12px
+        12px;
 
     }
 
 
     .logo {
 
-      font-size: 45px;
+      width: 72px;
+      height: 72px;
+
+      margin:
+        0 auto
+        12px;
+
+      border-radius: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 38px;
+
+      background:
+        rgba(255,255,255,0.16);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.25);
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,0.25);
+
+      backdrop-filter:
+        blur(10px);
 
     }
 
 
     .title {
 
-      font-size: 28px;
+      font-size: 24px;
+      line-height: 1.35;
 
       font-weight: 800;
 
-      line-height: 1.3;
+      margin: 0;
+
+      text-shadow:
+        0 3px 12px
+        rgba(0,0,0,0.25);
 
     }
 
 
-    .school {
+    .subtitle {
 
       margin-top: 7px;
 
       font-size: 14px;
 
-      opacity: .85;
+      color:
+        rgba(255,255,255,0.82);
 
     }
 
+
+    /* ==============================
+       INFO CARD
+       ============================== */
 
     .info-card {
 
-      background:
-        rgba(255,255,255,.96);
-
-      color: #1f2937;
-
-      border-radius: 22px;
+      margin-top: 10px;
 
       padding: 18px;
 
-      margin-bottom: 15px;
+      border-radius: 22px;
+
+      background:
+        rgba(255,255,255,0.12);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.20);
 
       box-shadow:
-        0 15px 40px
-        rgba(0,0,0,.22);
+        0 12px 35px
+        rgba(0,0,0,0.18);
 
-    }
-
-
-    .info-title {
-
-      font-weight: 800;
-
-      color: #4338ca;
-
-      margin-bottom: 12px;
+      backdrop-filter:
+        blur(14px);
 
     }
 
@@ -144,53 +190,103 @@
 
       display: flex;
 
-      justify-content: space-between;
+      align-items: center;
 
-      gap: 10px;
+      gap: 12px;
 
-      padding: 8px 0;
-
-      border-bottom:
-        1px solid #e5e7eb;
+      padding: 9px 0;
 
     }
 
 
-    .info-row:last-child {
+    .info-icon {
 
-      border-bottom: none;
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,0.15);
+
+      font-size: 20px;
 
     }
 
 
     .info-label {
 
-      color: #6b7280;
+      font-size: 12px;
+
+      color:
+        rgba(255,255,255,0.70);
 
     }
 
 
     .info-value {
 
-      font-weight: 800;
+      margin-top: 2px;
 
-      text-align: right;
+      font-size: 16px;
+
+      font-weight: 700;
+
+      word-break: break-word;
 
     }
 
 
+    /* ==============================
+       SCANNER CARD
+       ============================== */
+
     .scanner-card {
 
+      margin-top: 16px;
+
+      padding: 16px;
+
+      border-radius: 24px;
+
       background:
-        rgba(255,255,255,.97);
+        #ffffff;
 
-      border-radius: 22px;
-
-      padding: 15px;
+      color: #1d2140;
 
       box-shadow:
-        0 15px 40px
-        rgba(0,0,0,.22);
+        0 18px 50px
+        rgba(0,0,0,0.25);
+
+    }
+
+
+    .scanner-title {
+
+      text-align: center;
+
+      font-size: 18px;
+
+      font-weight: 800;
+
+      color: #27136b;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .scanner-title span {
+
+      font-size: 24px;
+
+      margin-right: 5px;
 
     }
 
@@ -201,65 +297,179 @@
 
       overflow: hidden;
 
-      border-radius: 16px;
+      border-radius: 18px;
+
+      background:
+        #111827;
 
     }
 
+
+    /*
+     * ปรับ UI ของ html5-qrcode
+     */
 
     #reader video {
 
-      border-radius: 14px;
+      width: 100% !important;
+
+      border-radius: 18px;
+
+      object-fit: cover;
 
     }
 
+
+    #reader__scan_region {
+
+      min-height: 280px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #111827;
+
+    }
+
+
+    #reader__dashboard {
+
+      padding:
+        12px 4px 4px;
+
+    }
+
+
+    #reader__dashboard_section {
+
+      width: 100%;
+
+    }
+
+
+    #reader button {
+
+      border: none;
+
+      border-radius: 12px;
+
+      padding:
+        10px
+        16px;
+
+      margin: 4px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #3520a0,
+          #6420a5
+        );
+
+      color: white;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+    }
+
+
+    #reader select {
+
+      max-width: 100%;
+
+      padding: 9px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid
+        #d4d4d8;
+
+    }
+
+
+    /* ==============================
+       STATUS
+       ============================== */
 
     .status {
 
       margin-top: 14px;
 
-      padding: 14px;
+      padding: 15px;
 
-      border-radius: 14px;
+      border-radius: 16px;
 
       text-align: center;
 
-      font-weight: 800;
+      font-size: 15px;
 
-      color: #374151;
+      font-weight: 700;
 
-      background: #f3f4f6;
+      display: none;
+
+    }
+
+
+    .status.show {
+      display: block;
+    }
+
+
+    .status.loading {
+
+      background:
+        #eef2ff;
+
+      color:
+        #3730a3;
 
     }
 
 
     .status.success {
 
-      color: #166534;
+      background:
+        #dcfce7;
 
-      background: #dcfce7;
+      color:
+        #166534;
 
     }
 
 
     .status.error {
 
-      color: #991b1b;
+      background:
+        #fee2e2;
 
-      background: #fee2e2;
+      color:
+        #991b1b;
 
     }
 
 
     .status.warning {
 
-      color: #92400e;
+      background:
+        #fef3c7;
 
-      background: #fef3c7;
+      color:
+        #92400e;
 
     }
 
 
-    .student-card {
+    /* ==============================
+       RESULT CARD
+       ============================== */
+
+    .result {
 
       display: none;
 
@@ -267,153 +477,137 @@
 
       padding: 18px;
 
-      border-radius: 18px;
+      border-radius: 20px;
 
       text-align: center;
 
       background:
         linear-gradient(
           135deg,
-          #eef2ff,
-          #f5f3ff
+          #ecfdf5,
+          #dcfce7
         );
 
-      color: #312e81;
+      color:
+        #14532d;
+
+      border:
+        1px solid
+        #bbf7d0;
 
     }
 
 
-    .student-card.show {
-
+    .result.show {
       display: block;
+    }
+
+
+    .result-icon {
+
+      font-size: 48px;
+
+      line-height: 1;
+
+      margin-bottom: 8px;
 
     }
 
 
-    .student-icon {
+    .result-title {
 
-      font-size: 42px;
+      font-size: 20px;
+
+      font-weight: 900;
 
     }
 
 
     .student-name {
 
-      font-size: 22px;
+      margin-top: 8px;
 
-      font-weight: 900;
+      font-size: 18px;
 
-      margin: 5px 0;
+      font-weight: 800;
 
     }
 
 
     .student-id {
 
-      font-size: 17px;
+      margin-top: 4px;
 
-      font-weight: 700;
+      font-size: 14px;
 
     }
 
 
-    .time {
+    .result-time {
 
       margin-top: 8px;
 
-      color: #4b5563;
+      font-size: 13px;
+
+      opacity: 0.8;
 
     }
 
 
-    .scan-next {
-
-      display: none;
-
-      width: 100%;
-
-      margin-top: 12px;
-
-      padding: 15px;
-
-      border: none;
-
-      border-radius: 15px;
-
-      color: white;
-
-      background:
-        linear-gradient(
-          135deg,
-          #4f46e5,
-          #7c3aed
-        );
-
-      font-size: 17px;
-
-      font-weight: 800;
-
-    }
-
-
-    .scan-next.show {
-
-      display: block;
-
-    }
-
-
-    .loading {
-
-      display: none;
-
-      text-align: center;
-
-      padding: 15px;
-
-      color: #4338ca;
-
-      font-weight: 800;
-
-    }
-
-
-    .loading.show {
-
-      display: block;
-
-    }
-
+    /* ==============================
+       FOOTER
+       ============================== */
 
     .footer {
 
-      text-align: center;
+      margin-top: auto;
 
-      margin-top: 18px;
+      padding:
+        18px 8px 8px;
+
+      text-align: center;
 
       font-size: 12px;
 
-      opacity: .7;
+      color:
+        rgba(255,255,255,0.65);
 
     }
 
 
-    @media(max-width:480px) {
+    /* ==============================
+       MOBILE
+       ============================== */
+
+    @media (max-width: 420px) {
+
+      body {
+        padding: 10px;
+      }
+
+      .app {
+        min-height:
+          calc(100vh - 20px);
+      }
 
       .title {
-
-        font-size: 24px;
-
+        font-size: 21px;
       }
 
-      .info-card,
+      .info-card {
+        padding: 14px;
+      }
+
       .scanner-card {
+        padding: 12px;
+      }
 
-        border-radius: 18px;
-
+      #reader__scan_region {
+        min-height: 250px;
       }
 
     }
+
 
   </style>
 
@@ -423,119 +617,158 @@
 <body>
 
 
-<div class="container">
+<div class="app">
 
 
-  <!-- HEADER -->
+  <!-- =================================
+       HEADER
+       ================================= -->
 
-  <div class="header">
+  <header class="header">
 
     <div class="logo">
-      📷
+      📚
     </div>
 
-    <div class="title">
-      ระบบเช็คชื่อ QR Code
-    </div>
+    <h1 class="title">
+      ระบบเช็คชื่อนักเรียน นักศึกษา
+    </h1>
 
-    <div class="school">
+    <div class="subtitle">
       วิทยาลัยเทคโนโลยีนครขอนแก่น
     </div>
 
-  </div>
+  </header>
 
 
-  <!-- CLASS INFORMATION -->
+  <!-- =================================
+       CLASS INFORMATION
+       ================================= -->
 
-  <div class="info-card">
-
-    <div class="info-title">
-      📚 ข้อมูลการเช็คชื่อ
-    </div>
-
-
-    <div class="info-row">
-
-      <span class="info-label">
-        👨‍🏫 ผู้สอน
-      </span>
-
-      <span
-        id="teacher"
-        class="info-value"
-      >
-        -
-      </span>
-
-    </div>
+  <section class="info-card">
 
 
     <div class="info-row">
 
-      <span class="info-label">
-        📖 รายวิชา
-      </span>
+      <div class="info-icon">
+        👨‍🏫
+      </div>
 
-      <span
-        id="course"
-        class="info-value"
-      >
-        -
-      </span>
+      <div>
+
+        <div class="info-label">
+          ผู้สอน
+        </div>
+
+        <div
+          class="info-value"
+          id="teacherName"
+        >
+          กำลังโหลด...
+        </div>
+
+      </div>
 
     </div>
 
 
     <div class="info-row">
 
-      <span class="info-label">
-        🏫 ห้อง
-      </span>
+      <div class="info-icon">
+        📖
+      </div>
 
-      <span
-        id="room"
-        class="info-value"
-      >
-        -
-      </span>
+      <div>
+
+        <div class="info-label">
+          รายวิชา
+        </div>
+
+        <div
+          class="info-value"
+          id="courseName"
+        >
+          กำลังโหลด...
+        </div>
+
+      </div>
 
     </div>
 
-  </div>
+
+    <div class="info-row">
+
+      <div class="info-icon">
+        🏫
+      </div>
+
+      <div>
+
+        <div class="info-label">
+          ห้องเรียน
+        </div>
+
+        <div
+          class="info-value"
+          id="roomName"
+        >
+          กำลังโหลด...
+        </div>
+
+      </div>
+
+    </div>
 
 
-  <!-- SCANNER -->
+  </section>
 
-  <div class="scanner-card">
+
+  <!-- =================================
+       SCANNER
+       ================================= -->
+
+  <section class="scanner-card">
+
+
+    <div class="scanner-title">
+
+      <span>📷</span>
+
+      สแกน QR Code นักศึกษา
+
+    </div>
+
 
     <div id="reader"></div>
 
 
+    <!-- STATUS -->
+
     <div
       id="status"
       class="status"
-    >
-      📷 กำลังเตรียมกล้อง...
-    </div>
+    ></div>
 
 
-    <div
-      id="loading"
-      class="loading"
-    >
-      ⏳ กำลังตรวจสอบข้อมูล...
-    </div>
-
-
-    <!-- STUDENT RESULT -->
+    <!-- RESULT -->
 
     <div
-      id="studentCard"
-      class="student-card"
+      id="result"
+      class="result"
     >
 
-      <div class="student-icon">
-        👨‍🎓
+      <div
+        id="resultIcon"
+        class="result-icon"
+      >
+        ✅
+      </div>
+
+      <div
+        id="resultTitle"
+        class="result-title"
+      >
+        เช็คชื่อสำเร็จ
       </div>
 
       <div
@@ -553,15 +786,8 @@
       </div>
 
       <div
-        id="studentRoom"
-        class="time"
-      >
-        -
-      </div>
-
-      <div
-        id="attendanceTime"
-        class="time"
+        id="resultTime"
+        class="result-time"
       >
         -
       </div>
@@ -569,24 +795,18 @@
     </div>
 
 
-    <button
-      id="scanNext"
-      class="scan-next"
-      onclick="scanNext()"
-    >
-
-      📷 สแกนนักศึกษาคนต่อไป
-
-    </button>
-
-  </div>
+  </section>
 
 
-  <div class="footer">
+  <footer class="footer">
 
-    💙 QR Attendance V1
+    📱 ระบบเช็คชื่อด้วย QR Code V1
 
-  </div>
+    <br>
+
+    วิทยาลัยเทคโนโลยีนครขอนแก่น
+
+  </footer>
 
 
 </div>
@@ -595,273 +815,251 @@
 
 <script>
 
-
 /* =====================================================
-   CONFIG
-===================================================== */
+   CONFIGURATION
+   ===================================================== */
 
+
+/*
+ * URL ของ Google Apps Script
+ *
+ * เป็น URL ที่คุณให้มา
+ */
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbyZnE0RIZIyy-3PKoV69R67eLaUYxgkgfYy4GjkCK19IqubmKI4iHbIdrn9WMlbhfZxmQ/exec';
+  "https://script.google.com/macros/s/AKfycbyZnE0RIZIyy-3PKoV69R67eLaUYxgkgfYy4GjkCK19IqubmKI4iHbIdrn9WMlbhfZxmQ/exec";
 
 
-/* =====================================================
-   GLOBAL
-===================================================== */
+/*
+ * อ่านค่าจาก URL
+ *
+ * ตัวอย่าง:
+ *
+ * ?teacherCode=T001
+ * &teacherName=ครูทดสอบ
+ * &courseCode=20204-2008
+ * &courseName=การสร้างเว็บไซต์
+ * &room=COM01
+ */
 
-
-let scanner = null;
-
-let scanning = false;
-
-let processing = false;
-
-let lastScan = '';
-
-let lastScanTime = 0;
-
-let classData = {};
-
-
-/* =====================================================
-   START
-===================================================== */
-
-
-window.addEventListener(
-  'load',
-  function() {
-
-    loadClassData();
-
-  }
-);
-
-
-/* =====================================================
-   LOAD CLASS DATA
-===================================================== */
-
-
-function loadClassData() {
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  classData.teacherCode =
-    params.get(
-      'teacherCode'
-    ) || '';
-
-
-  classData.teacherName =
-    params.get(
-      'teacherName'
-    ) || '';
-
-
-  classData.courseCode =
-    params.get(
-      'courseCode'
-    ) || '';
-
-
-  classData.courseName =
-    params.get(
-      'courseName'
-    ) || '';
-
-
-  classData.room =
-    params.get(
-      'room'
-    ) || '';
-
-
-  /*
-   * แสดงข้อมูล
-   */
-
-  document.getElementById(
-    'teacher'
-  ).textContent =
-    classData.teacherName ||
-    classData.teacherCode ||
-    '-';
-
-
-  document.getElementById(
-    'course'
-  ).textContent =
-    classData.courseName ||
-    classData.courseCode ||
-    '-';
-
-
-  document.getElementById(
-    'room'
-  ).textContent =
-    classData.room ||
-    '-';
-
-
-  startScanner();
-
-}
-
-
-/* =====================================================
-   START CAMERA
-===================================================== */
-
-
-async function startScanner() {
-
-  setStatus(
-    '📷 กำลังเปิดกล้อง...',
-    ''
+const params =
+  new URLSearchParams(
+    window.location.search
   );
 
 
-  try {
+/*
+ * ข้อมูลห้องเรียน / วิชา
+ */
 
-    scanner =
-      new Html5Qrcode(
-        'reader'
-      );
+const CLASS_INFO = {
 
+  teacherCode:
+    params.get("teacherCode")
+    || "T001",
 
-    const cameras =
-      await Html5Qrcode.getCameras();
+  teacherName:
+    params.get("teacherName")
+    || "ครูทดสอบ",
 
+  courseCode:
+    params.get("courseCode")
+    || "20204-2008",
 
-    if (
-      !cameras ||
-      cameras.length === 0
-    ) {
+  courseName:
+    params.get("courseName")
+    || "การสร้างเว็บไซต์",
 
-      throw new Error(
-        'ไม่พบกล้องในอุปกรณ์'
-      );
+  room:
+    params.get("room")
+    || "COM01"
 
-    }
-
-
-    /*
-     * พยายามเลือกกล้องหลัง
-     */
-
-    let cameraId =
-      cameras[0].id;
+};
 
 
-    const backCamera =
-      cameras.find(
-        camera => {
+/* =====================================================
+   DOM
+   ===================================================== */
 
-          const label =
-            (
-              camera.label ||
-              ''
-            ).toLowerCase();
+const teacherNameEl =
+  document.getElementById(
+    "teacherName"
+  );
 
+const courseNameEl =
+  document.getElementById(
+    "courseName"
+  );
 
-          return (
-            label.includes(
-              'back'
-            ) ||
+const roomNameEl =
+  document.getElementById(
+    "roomName"
+  );
 
-            label.includes(
-              'rear'
-            ) ||
+const statusEl =
+  document.getElementById(
+    "status"
+  );
 
-            label.includes(
-              'environment'
-            )
+const resultEl =
+  document.getElementById(
+    "result"
+  );
 
-          );
+const resultIconEl =
+  document.getElementById(
+    "resultIcon"
+  );
 
-        }
-      );
+const resultTitleEl =
+  document.getElementById(
+    "resultTitle"
+  );
 
+const studentNameEl =
+  document.getElementById(
+    "studentName"
+  );
 
-    if (backCamera) {
+const studentIdEl =
+  document.getElementById(
+    "studentId"
+  );
 
-      cameraId =
-        backCamera.id;
-
-    }
-
-
-    await scanner.start(
-
-      cameraId,
-
-      {
-
-        fps: 10,
-
-        qrbox: function(
-          width,
-          height
-        ) {
-
-          const size =
-            Math.min(
-              width,
-              height
-            ) * 0.72;
+const resultTimeEl =
+  document.getElementById(
+    "resultTime"
+  );
 
 
-          return {
+/* =====================================================
+   SHOW CLASS INFORMATION
+   ===================================================== */
 
-            width: size,
+teacherNameEl.textContent =
+  CLASS_INFO.teacherName;
 
-            height: size
+courseNameEl.textContent =
+  CLASS_INFO.courseName;
 
-          };
-
-        },
-
-        aspectRatio: 1.0
-
-      },
-
-      onScanSuccess,
-
-      onScanFailure
-
-    );
+roomNameEl.textContent =
+  CLASS_INFO.room;
 
 
-    scanning = true;
+/* =====================================================
+   SCANNER STATE
+   ===================================================== */
+
+let scanner = null;
+
+let processing = false;
+
+let lastScannedCode = "";
+
+let lastScanTime = 0;
 
 
-    setStatus(
-      '🟢 พร้อมสแกน QR Code',
-      'success'
-    );
+/*
+ * ป้องกัน QR เดิมถูกอ่านหลายครั้ง
+ */
+
+const DUPLICATE_DELAY = 3000;
+
+
+/* =====================================================
+   STATUS FUNCTIONS
+   ===================================================== */
+
+function showStatus(
+  message,
+  type
+) {
+
+  statusEl.textContent =
+    message;
+
+  statusEl.className =
+    "status show " +
+    type;
+
+}
+
+
+function hideStatus() {
+
+  statusEl.className =
+    "status";
+
+}
+
+
+/* =====================================================
+   RESULT FUNCTIONS
+   ===================================================== */
+
+function showResult(
+  icon,
+  title,
+  name,
+  studentId,
+  time,
+  type
+) {
+
+  resultIconEl.textContent =
+    icon;
+
+  resultTitleEl.textContent =
+    title;
+
+  studentNameEl.textContent =
+    name
+      ? "👨‍🎓 " + name
+      : "";
+
+  studentIdEl.textContent =
+    studentId
+      ? "รหัสนักศึกษา: " +
+        studentId
+      : "";
+
+  resultTimeEl.textContent =
+    time
+      ? "🕐 " + time
+      : "";
+
+  resultEl.className =
+    "result show";
+
+
+  /*
+   * เปลี่ยนสีตามผลลัพธ์
+   */
+
+  if (
+    type === "error"
+  ) {
+
+    resultEl.style.background =
+      "linear-gradient(135deg,#fff1f2,#ffe4e6)";
+
+    resultEl.style.color =
+      "#9f1239";
+
+    resultEl.style.borderColor =
+      "#fecdd3";
 
   }
+  else {
 
-  catch(error) {
+    resultEl.style.background =
+      "linear-gradient(135deg,#ecfdf5,#dcfce7)";
 
-    console.error(
-      error
-    );
+    resultEl.style.color =
+      "#14532d";
 
-
-    setStatus(
-      '❌ ไม่สามารถเปิดกล้องได้\n' +
-      (
-        error.message ||
-        'กรุณาอนุญาตการใช้กล้อง'
-      ),
-      'error'
-    );
+    resultEl.style.borderColor =
+      "#bbf7d0";
 
   }
 
@@ -869,13 +1067,33 @@ async function startScanner() {
 
 
 /* =====================================================
-   QR SUCCESS
-===================================================== */
+   HIDE RESULT
+   ===================================================== */
+
+function hideResult() {
+
+  resultEl.className =
+    "result";
+
+}
 
 
-function onScanSuccess(
+/* =====================================================
+   QR SCAN SUCCESS
+   ===================================================== */
+
+async function onScanSuccess(
   decodedText
 ) {
+
+
+  /*
+   * ป้องกันการส่งซ้ำ
+   */
+
+  const now =
+    Date.now();
+
 
   if (
     processing
@@ -886,19 +1104,13 @@ function onScanSuccess(
   }
 
 
-  const now =
-    Date.now();
-
-
-  /*
-   * ป้องกัน QR เดิมยิงซ้ำ
-   */
-
   if (
 
-    decodedText === lastScan &&
+    decodedText ===
+      lastScannedCode &&
 
-    now - lastScanTime < 3000
+    now - lastScanTime <
+      DUPLICATE_DELAY
 
   ) {
 
@@ -907,141 +1119,116 @@ function onScanSuccess(
   }
 
 
-  lastScan =
+  lastScannedCode =
     decodedText;
 
   lastScanTime =
     now;
 
 
-  processAttendance(
-    decodedText
-  );
-
-}
-
-
-/* =====================================================
-   QR FAILURE
-===================================================== */
-
-
-function onScanFailure(
-  error
-) {
-
   /*
-   * ไม่ต้องแสดง error
-   * เพราะ scanner จะเรียก function นี้
-   * ขณะยังหา QR ไม่เจอเป็นปกติ
+   * หยุดประมวลผล QR ชั่วคราว
    */
-
-}
-
-
-/* =====================================================
-   PROCESS ATTENDANCE
-===================================================== */
-
-
-async function processAttendance(
-  qrCode
-) {
 
   processing = true;
 
 
-  setStatus(
-    '⏳ กำลังตรวจสอบ...',
-    ''
-  );
+  hideResult();
 
 
-  document.getElementById(
-    'loading'
-  ).classList.add(
-    'show'
+  showStatus(
+    "⏳ กำลังบันทึกการเช็คชื่อ...",
+    "loading"
   );
 
 
   /*
-   * ส่งข้อมูลไป Apps Script
+   * ตัดช่องว่าง
+   */
+
+  const studentId =
+    String(
+      decodedText
+    ).trim();
+
+
+  /*
+   * QR V1 ต้องมีเพียงรหัสนักศึกษา
+   */
+
+  if (
+    !studentId
+  ) {
+
+    showStatus(
+      "❌ QR Code ไม่มีข้อมูลรหัสนักศึกษา",
+      "error"
+    );
+
+    processing =
+      false;
+
+    return;
+
+  }
+
+
+  /*
+   * ส่งไป Apps Script
    */
 
   try {
 
-    const url =
-      API_URL +
-
-      '?action=checkin' +
-
-      '&callback=attendanceCallback' +
-
-      '&studentId=' +
-      encodeURIComponent(
-        qrCode
-      ) +
-
-      '&teacherCode=' +
-      encodeURIComponent(
-        classData.teacherCode
-      ) +
-
-      '&courseCode=' +
-      encodeURIComponent(
-        classData.courseCode
-      ) +
-
-      '&room=' +
-      encodeURIComponent(
-        classData.room
-      );
-
-
-    /*
-     * JSONP
-     */
-
-    await callJsonp(
-      url
+    await sendCheckin(
+      studentId
     );
 
   }
-
-  catch(error) {
+  catch (error) {
 
     console.error(
       error
     );
 
-
-    processing = false;
-
-
-    document.getElementById(
-      'loading'
-    ).classList.remove(
-      'show'
-    );
-
-
-    setStatus(
-      '❌ ไม่สามารถเชื่อมต่อระบบได้',
-      'error'
+    showStatus(
+      "❌ ไม่สามารถเชื่อมต่อระบบได้",
+      "error"
     );
 
   }
+
+
+  /*
+   * เปิดให้สแกนคนต่อไป
+   */
+
+  setTimeout(
+    function() {
+
+      processing =
+        false;
+
+    },
+    1000
+  );
 
 }
 
 
 /* =====================================================
-   JSONP
-===================================================== */
+   SEND CHECK-IN
+   ===================================================== */
 
 
-function callJsonp(
-  url
+/*
+ * ใช้ JSONP
+ *
+ * เพราะ GitHub Pages และ Apps Script
+ * อยู่คนละโดเมน
+ */
+
+function sendCheckin(
+  studentId
 ) {
 
   return new Promise(
@@ -1050,34 +1237,127 @@ function callJsonp(
       reject
     ) {
 
-      const script =
-        document.createElement(
-          'script'
+
+      /*
+       * ชื่อ callback
+       */
+
+      const callbackName =
+        "attendanceCallback_" +
+        Date.now() +
+        "_" +
+        Math.floor(
+          Math.random() * 100000
         );
 
 
-      const callbackName =
-        'attendanceCallback';
+      /*
+       * สร้าง URL
+       */
 
+      const url =
+        new URL(
+          API_URL
+        );
+
+
+      url.searchParams.set(
+        "action",
+        "checkin"
+      );
+
+
+      url.searchParams.set(
+        "studentId",
+        studentId
+      );
+
+
+      url.searchParams.set(
+        "teacherCode",
+        CLASS_INFO.teacherCode
+      );
+
+
+      url.searchParams.set(
+        "courseCode",
+        CLASS_INFO.courseCode
+      );
+
+
+      url.searchParams.set(
+        "room",
+        CLASS_INFO.room
+      );
+
+
+      url.searchParams.set(
+        "callback",
+        callbackName
+      );
+
+
+      /*
+       * สร้าง callback
+       */
 
       window[
         callbackName
-      ] = function(data) {
-
-        cleanup();
-
-        handleAttendanceResult(
+      ] =
+        function(
           data
+        ) {
+
+          try {
+
+            handleApiResponse(
+              data
+            );
+
+            resolve(
+              data
+            );
+
+          }
+          catch (
+            error
+          ) {
+
+            reject(
+              error
+            );
+
+          }
+          finally {
+
+            cleanup();
+
+          }
+
+        };
+
+
+      /*
+       * สร้าง script
+       */
+
+      const script =
+        document.createElement(
+          "script"
         );
-
-        resolve(data);
-
-      };
 
 
       script.src =
-        url;
+        url.toString();
 
+
+      script.async =
+        true;
+
+
+      /*
+       * กรณีโหลดไม่ได้
+       */
 
       script.onerror =
         function() {
@@ -1086,7 +1366,7 @@ function callJsonp(
 
           reject(
             new Error(
-              'API connection error'
+              "API connection failed"
             )
           );
 
@@ -1098,15 +1378,53 @@ function callJsonp(
       );
 
 
+      /*
+       * timeout
+       */
+
+      const timeout =
+        setTimeout(
+          function() {
+
+            cleanup();
+
+            reject(
+              new Error(
+                "API timeout"
+              )
+            );
+
+            showStatus(
+              "❌ ระบบตอบกลับช้า กรุณาลองใหม่",
+              "error"
+            );
+
+          },
+          15000
+        );
+
+
+      /*
+       * cleanup
+       */
+
       function cleanup() {
 
-        try {
+        clearTimeout(
+          timeout
+        );
 
-          script.remove();
+
+        if (
+          script.parentNode
+        ) {
+
+          script.parentNode
+            .removeChild(
+              script
+            );
 
         }
-
-        catch(e) {}
 
 
         try {
@@ -1116,40 +1434,17 @@ function callJsonp(
           ];
 
         }
+        catch (
+          error
+        ) {
 
-        catch(e) {}
+          window[
+            callbackName
+          ] = undefined;
+
+        }
 
       }
-
-
-      /*
-       * Timeout
-       */
-
-      setTimeout(
-        function() {
-
-          if (
-            document.body.contains(
-              script
-            )
-          ) {
-
-            cleanup();
-
-            reject(
-              new Error(
-                'API timeout'
-              )
-            );
-
-          }
-
-        },
-
-        15000
-
-      );
 
     }
   );
@@ -1158,29 +1453,31 @@ function callJsonp(
 
 
 /* =====================================================
-   HANDLE RESULT
-===================================================== */
+   HANDLE API RESPONSE
+   ===================================================== */
 
-
-function handleAttendanceResult(
+function handleApiResponse(
   data
 ) {
 
-  processing = false;
 
-
-  document.getElementById(
-    'loading'
-  ).classList.remove(
-    'show'
+  console.log(
+    "API Response:",
+    data
   );
 
 
-  if (!data) {
+  /*
+   * ไม่มีข้อมูลตอบกลับ
+   */
 
-    setStatus(
-      '❌ ระบบไม่ได้ส่งข้อมูลกลับมา',
-      'error'
+  if (
+    !data
+  ) {
+
+    showStatus(
+      "❌ ระบบไม่ส่งข้อมูลกลับมา",
+      "error"
     );
 
     return;
@@ -1189,34 +1486,58 @@ function handleAttendanceResult(
 
 
   /*
-   * SUCCESS
+   * สำเร็จ
    */
 
   if (
     data.success === true
   ) {
 
-    showStudent(
-      data
+
+    showStatus(
+      "✅ บันทึกการเช็คชื่อสำเร็จ",
+      "success"
     );
 
 
-    setStatus(
-      '✅ เช็คชื่อสำเร็จ',
-      'success'
+    showResult(
+
+      "✅",
+
+      "เช็คชื่อสำเร็จ",
+
+      data.student &&
+      data.student.name
+        ? data.student.name
+        : "-",
+
+      data.student &&
+      data.student.studentId
+        ? data.student.studentId
+        : "-",
+
+      data.time
+        ? data.time
+        : "-",
+
+      "success"
+
     );
 
+
+    /*
+     * เสียงแจ้งเตือน
+     */
 
     playSuccessSound();
 
 
-    pauseScanner();
+    /*
+     * สั่นมือถือ
+     */
 
-
-    document.getElementById(
-      'scanNext'
-    ).classList.add(
-      'show'
+    vibrate(
+      [100, 60, 100]
     );
 
 
@@ -1226,38 +1547,47 @@ function handleAttendanceResult(
 
 
   /*
-   * DUPLICATE
+   * เช็คชื่อซ้ำ
    */
 
   if (
     data.duplicate === true
   ) {
 
-    showStudent(
-      data
+
+    showStatus(
+      "⚠️ นักศึกษาคนนี้เช็คชื่อแล้ว",
+      "warning"
     );
 
 
-    setStatus(
-      '⚠️ นักศึกษาคนนี้เช็คชื่อแล้ว\n' +
-      (
-        data.time ||
-        ''
-      ),
-      'warning'
+    showResult(
+
+      "⚠️",
+
+      "เช็คชื่อแล้ว",
+
+      data.student &&
+      data.student.name
+        ? data.student.name
+        : "-",
+
+      data.student &&
+      data.student.studentId
+        ? data.student.studentId
+        : "-",
+
+      data.time
+        ? data.time
+        : "-",
+
+      "error"
+
     );
 
 
-    playWarningSound();
-
-
-    pauseScanner();
-
-
-    document.getElementById(
-      'scanNext'
-    ).classList.add(
-      'show'
+    vibrate(
+      [200]
     );
 
 
@@ -1267,243 +1597,57 @@ function handleAttendanceResult(
 
 
   /*
-   * ERROR
+   * Error จากระบบ
    */
 
-  setStatus(
-    '❌ ' +
+  showStatus(
+
+    "❌ " +
     (
       data.message ||
-      'ไม่สามารถเช็คชื่อได้'
+      "ไม่สามารถเช็คชื่อได้"
     ),
-    'error'
-  );
 
-
-  playErrorSound();
-
-
-  /*
-   * ให้กลับมาสแกนต่อ
-   */
-
-  setTimeout(
-    function() {
-
-      processing = false;
-
-      setStatus(
-        '🟢 พร้อมสแกน QR Code',
-        'success'
-      );
-
-    },
-
-    2500
+    "error"
 
   );
 
-}
+
+  showResult(
+
+    "❌",
+
+    "เช็คชื่อไม่สำเร็จ",
+
+    data.student &&
+    data.student.name
+      ? data.student.name
+      : "",
+
+    data.student &&
+    data.student.studentId
+      ? data.student.studentId
+      : "",
+
+    "",
+
+    "error"
+
+  );
 
 
-/* =====================================================
-   SHOW STUDENT
-===================================================== */
-
-
-function showStudent(
-  data
-) {
-
-  const student =
-    data.student ||
-    {};
-
-
-  document.getElementById(
-    'studentName'
-  ).textContent =
-    student.name ||
-    '-';
-
-
-  document.getElementById(
-    'studentId'
-  ).textContent =
-    'รหัส: ' +
-    (
-      student.studentId ||
-      '-'
-    );
-
-
-  document.getElementById(
-    'studentRoom'
-  ).textContent =
-    '🏫 ห้อง ' +
-    (
-      student.room ||
-      '-'
-    );
-
-
-  document.getElementById(
-    'attendanceTime'
-  ).textContent =
-    '🕐 ' +
-    (
-      data.time ||
-      '-'
-    );
-
-
-  document.getElementById(
-    'studentCard'
-  ).classList.add(
-    'show'
+  vibrate(
+    [200, 100, 200]
   );
 
 }
 
 
 /* =====================================================
-   PAUSE SCANNER
-===================================================== */
+   SUCCESS SOUND
+   ===================================================== */
 
-
-async function pauseScanner() {
-
-  if (
-    !scanner ||
-    !scanning
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await scanner.pause(
-      true
-    );
-
-  }
-
-  catch(error) {
-
-    console.log(
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   NEXT STUDENT
-===================================================== */
-
-
-async function scanNext() {
-
-  processing = false;
-
-  lastScan = '';
-
-  lastScanTime = 0;
-
-
-  document.getElementById(
-    'studentCard'
-  ).classList.remove(
-    'show'
-  );
-
-
-  document.getElementById(
-    'scanNext'
-  ).classList.remove(
-    'show'
-  );
-
-
-  setStatus(
-    '🟢 พร้อมสแกน QR Code',
-    'success'
-  );
-
-
-  try {
-
-    if (
-      scanner &&
-      scanning
-    ) {
-
-      await scanner.resume();
-
-    }
-
-  }
-
-  catch(error) {
-
-    console.log(
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-
-function setStatus(
-  text,
-  type
-) {
-
-  const element =
-    document.getElementById(
-      'status'
-    );
-
-
-  element.textContent =
-    text;
-
-
-  element.className =
-    'status';
-
-
-  if (type) {
-
-    element.classList.add(
-      type
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SOUND
-===================================================== */
-
-
-function playTone(
-  frequency,
-  duration
-) {
+function playSuccessSound() {
 
   try {
 
@@ -1512,16 +1656,37 @@ function playTone(
       window.webkitAudioContext;
 
 
-    const audio =
+    if (
+      !AudioContext
+    ) {
+
+      return;
+
+    }
+
+
+    const context =
       new AudioContext();
 
 
     const oscillator =
-      audio.createOscillator();
+      context.createOscillator();
 
 
     const gain =
-      audio.createGain();
+      context.createGain();
+
+
+    oscillator.type =
+      "sine";
+
+
+    oscillator.frequency.value =
+      880;
+
+
+    gain.gain.value =
+      0.12;
 
 
     oscillator.connect(
@@ -1530,20 +1695,8 @@ function playTone(
 
 
     gain.connect(
-      audio.destination
+      context.destination
     );
-
-
-    oscillator.frequency.value =
-      frequency;
-
-
-    oscillator.type =
-      'sine';
-
-
-    gain.gain.value =
-      0.15;
 
 
     oscillator.start();
@@ -1552,55 +1705,239 @@ function playTone(
     setTimeout(
       function() {
 
-        oscillator.stop();
-
-        audio.close();
+        oscillator.frequency.value =
+          1175;
 
       },
+      100
+    );
 
-      duration
 
+    setTimeout(
+      function() {
+
+        oscillator.stop();
+
+        context.close();
+
+      },
+      220
+    );
+
+  }
+  catch (
+    error
+  ) {
+
+    console.log(
+      "Sound unavailable"
     );
 
   }
 
-  catch(e) {}
+}
+
+
+/* =====================================================
+   VIBRATION
+   ===================================================== */
+
+function vibrate(
+  pattern
+) {
+
+  try {
+
+    if (
+      navigator.vibrate
+    ) {
+
+      navigator.vibrate(
+        pattern
+      );
+
+    }
+
+  }
+  catch (
+    error
+  ) {
+
+    console.log(
+      "Vibration unavailable"
+    );
+
+  }
 
 }
 
 
-function playSuccessSound() {
+/* =====================================================
+   START SCANNER
+   ===================================================== */
 
-  playTone(
-    880,
-    150
+function startScanner() {
+
+
+  showStatus(
+    "📷 กำลังเตรียมกล้อง...",
+    "loading"
   );
 
+
+  scanner =
+    new Html5Qrcode(
+      "reader"
+    );
+
+
+  const config = {
+
+    fps: 10,
+
+    qrbox: function(
+      viewfinderWidth,
+      viewfinderHeight
+    ) {
+
+      const minEdge =
+        Math.min(
+          viewfinderWidth,
+          viewfinderHeight
+        );
+
+
+      const size =
+        Math.floor(
+          minEdge * 0.70
+        );
+
+
+      return {
+
+        width:
+          Math.min(
+            320,
+            size
+          ),
+
+        height:
+          Math.min(
+            320,
+            size
+          )
+
+      };
+
+    },
+
+    aspectRatio:
+      1.0
+
+  };
+
+
+  /*
+   * กล้องหลัง
+   */
+
+  scanner
+    .start(
+
+      {
+        facingMode:
+          "environment"
+      },
+
+      config,
+
+      onScanSuccess,
+
+      function(
+        errorMessage
+      ) {
+
+        /*
+         * ไม่ต้องแสดง error
+         * ทุก frame เพราะจะเกิดถี่มาก
+         */
+
+      }
+
+    )
+
+    .then(
+      function() {
+
+        showStatus(
+          "📷 พร้อมสแกน QR Code",
+          "loading"
+        );
+
+      }
+    )
+
+    .catch(
+      function(error) {
+
+        console.error(
+          error
+        );
+
+
+        showStatus(
+
+          "❌ ไม่สามารถเปิดกล้องได้ " +
+          "กรุณาอนุญาตการใช้กล้อง",
+
+          "error"
+
+        );
+
+      }
+    );
+
 }
 
 
-function playWarningSound() {
+/* =====================================================
+   PAGE LOAD
+   ===================================================== */
 
-  playTone(
-    500,
-    250
-  );
+window.addEventListener(
+  "load",
+  function() {
 
-}
+    startScanner();
+
+  }
+);
 
 
-function playErrorSound() {
+/* =====================================================
+   PAGE CLOSE
+   ===================================================== */
 
-  playTone(
-    220,
-    400
-  );
+window.addEventListener(
+  "beforeunload",
+  function() {
 
-}
+    if (
+      scanner
+    ) {
 
+      scanner
+        .stop()
+        .catch(
+          function() {}
+        );
+
+    }
+
+  }
+);
 
 </script>
 
 </body>
-
 </html>
