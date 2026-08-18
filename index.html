@@ -19,9 +19,7 @@
 ระบบเช็คชื่อนักเรียน นักศึกษา
 </title>
 
-
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
 
 <style>
 
@@ -32,9 +30,7 @@
 body {
 
   margin: 0;
-
   padding: 14px;
-
   min-height: 100vh;
 
   font-family:
@@ -55,33 +51,26 @@ body {
 
 }
 
-
 .app {
 
   width: 100%;
-
   max-width: 520px;
-
   margin: auto;
 
 }
 
-
 .header {
 
   text-align: center;
-
   padding: 16px 8px;
 
 }
-
 
 .logo {
 
   font-size: 48px;
 
 }
-
 
 h1 {
 
@@ -93,19 +82,18 @@ h1 {
 
 }
 
-
 .subtitle {
 
-  opacity: .8;
+  opacity: .85;
 
   font-size: 14px;
 
 }
 
 
-/* ===============================
-   SETUP CARD
-   =============================== */
+/* =========================================
+   SETUP
+========================================= */
 
 .setup {
 
@@ -127,7 +115,6 @@ h1 {
 
 }
 
-
 label {
 
   display: block;
@@ -139,7 +126,6 @@ label {
   font-weight: bold;
 
 }
-
 
 select {
 
@@ -165,6 +151,13 @@ select {
 
 }
 
+select:disabled {
+
+  background: #e5e7eb;
+
+  color: #6b7280;
+
+}
 
 .room {
 
@@ -179,15 +172,13 @@ select {
 
 }
 
-
 .room-label {
 
   font-size: 12px;
 
-  opacity: .7;
+  opacity: .75;
 
 }
-
 
 .room-value {
 
@@ -200,48 +191,9 @@ select {
 }
 
 
-/* ===============================
-   BUTTON
-   =============================== */
-
-button {
-
-  width: 100%;
-
-  min-height: 48px;
-
-  border: none;
-
-  border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #a855f7
-    );
-
-  color: white;
-
-  font-size: 16px;
-
-  font-weight: bold;
-
-  cursor: pointer;
-
-}
-
-
-button:disabled {
-
-  opacity: .5;
-
-}
-
-
-/* ===============================
+/* =========================================
    SCANNER
-   =============================== */
+========================================= */
 
 .scanner {
 
@@ -257,7 +209,6 @@ button:disabled {
 
 }
 
-
 .scanner-title {
 
   text-align: center;
@@ -272,7 +223,6 @@ button:disabled {
 
 }
 
-
 #reader {
 
   width: 100%;
@@ -283,7 +233,6 @@ button:disabled {
 
 }
 
-
 #reader video {
 
   width: 100% !important;
@@ -291,7 +240,6 @@ button:disabled {
   border-radius: 16px;
 
 }
-
 
 #reader button {
 
@@ -308,9 +256,9 @@ button:disabled {
 }
 
 
-/* ===============================
+/* =========================================
    STATUS
-   =============================== */
+========================================= */
 
 .status {
 
@@ -328,13 +276,11 @@ button:disabled {
 
 }
 
-
 .status.show {
 
   display: block;
 
 }
-
 
 .loading {
 
@@ -344,7 +290,6 @@ button:disabled {
 
 }
 
-
 .success {
 
   background: #dcfce7;
@@ -353,7 +298,6 @@ button:disabled {
 
 }
 
-
 .error {
 
   background: #fee2e2;
@@ -361,7 +305,6 @@ button:disabled {
   color: #991b1b;
 
 }
-
 
 .warning {
 
@@ -372,9 +315,9 @@ button:disabled {
 }
 
 
-/* ===============================
+/* =========================================
    RESULT
-   =============================== */
+========================================= */
 
 .result {
 
@@ -394,13 +337,11 @@ button:disabled {
 
 }
 
-
 .result.show {
 
   display: block;
 
 }
-
 
 .result-icon {
 
@@ -408,6 +349,13 @@ button:disabled {
 
 }
 
+.result-title {
+
+  font-size: 17px;
+
+  font-weight: bold;
+
+}
 
 .result-name {
 
@@ -419,13 +367,16 @@ button:disabled {
 
 }
 
-
 .result-id {
 
   margin-top: 5px;
 
 }
 
+
+/* =========================================
+   FOOTER
+========================================= */
 
 .footer {
 
@@ -440,6 +391,30 @@ button:disabled {
 }
 
 
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+  body {
+    padding: 9px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 42px;
+  }
+
+  .setup {
+    padding: 14px;
+  }
+
+}
+
 </style>
 
 </head>
@@ -447,9 +422,12 @@ button:disabled {
 
 <body>
 
-
 <div class="app">
 
+
+<!-- =========================================
+     HEADER
+========================================= -->
 
 <header class="header">
 
@@ -468,64 +446,62 @@ button:disabled {
 </header>
 
 
-<!-- =================================
+<!-- =========================================
      SETUP
-     ================================= -->
+========================================= -->
 
 <section class="setup">
 
+  <label>
+    👨‍🏫 เลือกผู้สอน
+  </label>
 
-<label>
-  👨‍🏫 เลือกผู้สอน
-</label>
+  <select id="teacherSelect">
 
-<select id="teacherSelect">
+    <option value="">
+      ⏳ กำลังโหลดข้อมูลผู้สอน...
+    </option>
 
-  <option value="">
-    -- กำลังโหลดข้อมูลผู้สอน --
-  </option>
-
-</select>
-
-
-<label>
-  📚 เลือกรายวิชา
-</label>
-
-<select
-  id="courseSelect"
-  disabled
->
-
-  <option value="">
-    -- กรุณาเลือกผู้สอนก่อน --
-  </option>
-
-</select>
+  </select>
 
 
-<div class="room">
+  <label>
+    📚 เลือกรายวิชา
+  </label>
 
-  <div class="room-label">
-    🏫 ห้องเรียน
-  </div>
-
-  <div
-    id="roomValue"
-    class="room-value"
+  <select
+    id="courseSelect"
+    disabled
   >
-    -
+
+    <option value="">
+      -- กรุณาเลือกผู้สอนก่อน --
+    </option>
+
+  </select>
+
+
+  <div class="room">
+
+    <div class="room-label">
+      🏫 ห้องเช็คชื่อ
+    </div>
+
+    <div
+      id="roomValue"
+      class="room-value"
+    >
+      -
+    </div>
+
   </div>
-
-</div>
-
 
 </section>
 
 
-<!-- =================================
+<!-- =========================================
      SCANNER
-     ================================= -->
+========================================= -->
 
 <section
   id="scannerSection"
@@ -533,56 +509,56 @@ button:disabled {
   style="display:none;"
 >
 
-<div class="scanner-title">
+  <div class="scanner-title">
 
-  📷 สแกน QR Code นักศึกษา
+    📷 สแกน QR Code นักศึกษา
 
-</div>
-
-
-<div id="reader"></div>
-
-
-<div
-  id="status"
-  class="status"
-></div>
-
-
-<div
-  id="result"
-  class="result"
->
-
-  <div
-    id="resultIcon"
-    class="result-icon"
-  >
-    ✅
   </div>
 
-  <div
-    id="resultTitle"
-  >
-    เช็คชื่อสำเร็จ
-  </div>
+
+  <div id="reader"></div>
+
 
   <div
-    id="resultName"
-    class="result-name"
-  >
-    -
-  </div>
+    id="status"
+    class="status"
+  ></div>
+
 
   <div
-    id="resultId"
-    class="result-id"
+    id="result"
+    class="result"
   >
-    -
+
+    <div
+      id="resultIcon"
+      class="result-icon"
+    >
+      ✅
+    </div>
+
+    <div
+      id="resultTitle"
+      class="result-title"
+    >
+      เช็คชื่อสำเร็จ
+    </div>
+
+    <div
+      id="resultName"
+      class="result-name"
+    >
+      -
+    </div>
+
+    <div
+      id="resultId"
+      class="result-id"
+    >
+      -
+    </div>
+
   </div>
-
-</div>
-
 
 </section>
 
@@ -597,81 +573,70 @@ button:disabled {
 </div>
 
 
-
 <script>
 
-
-/* =================================================
+/* =====================================================
    CONFIG
-   ================================================= */
-
+===================================================== */
 
 /*
- * นำ URL Apps Script เดิมของคุณ
- * มาใส่แทนข้อความด้านล่าง
+ * Web App URL ตัวใหม่
+ *
+ * ห้ามใช้ URL เก่า
  */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbyZnE0RIZIyy-3PKoV69R67eLaUYxgkgfYy4GjkCK19IqubmKI4iHbIdrn9WMlbhfZxmQ/exec";
+  "https://script.google.com/macros/s/AKfycbyeZp9LubywmnFuv5DEBjjZESAoz-u387cNtNe4DmnyXcRdVZ03zs_1GTri76XwZQQnkQ/exec";
 
 
-/* =================================================
+/* =====================================================
    DOM
-   ================================================= */
+===================================================== */
 
 const teacherSelect =
   document.getElementById(
     "teacherSelect"
   );
 
-
 const courseSelect =
   document.getElementById(
     "courseSelect"
   );
-
 
 const roomValue =
   document.getElementById(
     "roomValue"
   );
 
-
 const scannerSection =
   document.getElementById(
     "scannerSection"
   );
-
 
 const statusEl =
   document.getElementById(
     "status"
   );
 
-
 const resultEl =
   document.getElementById(
     "result"
   );
-
 
 const resultIcon =
   document.getElementById(
     "resultIcon"
   );
 
-
 const resultTitle =
   document.getElementById(
     "resultTitle"
   );
 
-
 const resultName =
   document.getElementById(
     "resultName"
   );
-
 
 const resultId =
   document.getElementById(
@@ -679,9 +644,9 @@ const resultId =
   );
 
 
-/* =================================================
+/* =====================================================
    STATE
-   ================================================= */
+===================================================== */
 
 let selectedTeacher = null;
 
@@ -696,9 +661,9 @@ let lastCode = "";
 let lastScanTime = 0;
 
 
-/* =================================================
+/* =====================================================
    INITIAL LOAD
-   ================================================= */
+===================================================== */
 
 window.addEventListener(
   "load",
@@ -710,16 +675,14 @@ window.addEventListener(
 );
 
 
-/* =================================================
+/* =====================================================
    LOAD TEACHERS
-   ================================================= */
+===================================================== */
 
 function loadTeachers() {
 
   teacherSelect.innerHTML =
-
     '<option value="">⏳ กำลังโหลด...</option>';
-
 
   jsonp(
     "getTeachers",
@@ -730,6 +693,9 @@ function loadTeachers() {
         !data ||
         data.success !== true
       ) {
+
+        teacherSelect.innerHTML =
+          '<option value="">❌ โหลดข้อมูลไม่สำเร็จ</option>';
 
         showStatus(
           "❌ ไม่สามารถโหลดข้อมูลผู้สอนได้",
@@ -742,8 +708,20 @@ function loadTeachers() {
 
 
       teacherSelect.innerHTML =
-
         '<option value="">-- เลือกผู้สอน --</option>';
+
+
+      if (
+        !Array.isArray(data.teachers) ||
+        data.teachers.length === 0
+      ) {
+
+        teacherSelect.innerHTML =
+          '<option value="">ไม่พบข้อมูลผู้สอน</option>';
+
+        return;
+
+      }
 
 
       data.teachers.forEach(
@@ -754,16 +732,13 @@ function loadTeachers() {
               "option"
             );
 
-
           option.value =
             teacher.code;
-
 
           option.textContent =
             teacher.code +
             " - " +
             teacher.name;
-
 
           teacherSelect.appendChild(
             option
@@ -778,9 +753,9 @@ function loadTeachers() {
 }
 
 
-/* =================================================
+/* =====================================================
    TEACHER CHANGE
-   ================================================= */
+===================================================== */
 
 teacherSelect.addEventListener(
   "change",
@@ -792,7 +767,6 @@ teacherSelect.addEventListener(
 
     selectedTeacher =
       null;
-
 
     selectedCourse =
       null;
@@ -809,29 +783,27 @@ teacherSelect.addEventListener(
     stopScanner();
 
 
+    resultEl.className =
+      "result";
+
+
     courseSelect.disabled =
       true;
 
 
     courseSelect.innerHTML =
-
       '<option value="">⏳ กำลังโหลด...</option>';
 
 
     if (!code) {
 
       courseSelect.innerHTML =
-
         '<option value="">-- กรุณาเลือกผู้สอนก่อน --</option>';
 
       return;
 
     }
 
-
-    /*
-     * ค้นหาชื่อผู้สอนจาก option
-     */
 
     const option =
       teacherSelect.options[
@@ -859,9 +831,9 @@ teacherSelect.addEventListener(
 );
 
 
-/* =================================================
+/* =====================================================
    LOAD COURSES
-   ================================================= */
+===================================================== */
 
 function loadCourses(
   teacherCode
@@ -884,8 +856,12 @@ function loadCourses(
       ) {
 
         courseSelect.innerHTML =
-
           '<option value="">❌ โหลดรายวิชาไม่สำเร็จ</option>';
+
+        showStatus(
+          "❌ ไม่สามารถโหลดข้อมูลรายวิชาได้",
+          "error"
+        );
 
         return;
 
@@ -893,8 +869,23 @@ function loadCourses(
 
 
       courseSelect.innerHTML =
-
         '<option value="">-- เลือกรายวิชา --</option>';
+
+
+      if (
+        !Array.isArray(data.courses) ||
+        data.courses.length === 0
+      ) {
+
+        courseSelect.innerHTML =
+          '<option value="">ไม่มีรายวิชาสำหรับผู้สอนนี้</option>';
+
+        courseSelect.disabled =
+          true;
+
+        return;
+
+      }
 
 
       data.courses.forEach(
@@ -907,9 +898,7 @@ function loadCourses(
 
 
           option.value =
-            JSON.stringify(
-              course
-            );
+            JSON.stringify(course);
 
 
           option.textContent =
@@ -929,17 +918,6 @@ function loadCourses(
       courseSelect.disabled =
         false;
 
-
-      if (
-        data.courses.length === 0
-      ) {
-
-        courseSelect.innerHTML =
-
-          '<option value="">ไม่มีรายวิชาสำหรับผู้สอนนี้</option>';
-
-      }
-
     }
 
   );
@@ -947,9 +925,9 @@ function loadCourses(
 }
 
 
-/* =================================================
+/* =====================================================
    COURSE CHANGE
-   ================================================= */
+===================================================== */
 
 courseSelect.addEventListener(
   "change",
@@ -968,6 +946,10 @@ courseSelect.addEventListener(
 
 
     stopScanner();
+
+
+    resultEl.className =
+      "result";
 
 
     if (
@@ -1004,10 +986,6 @@ courseSelect.addEventListener(
       "-";
 
 
-    /*
-     * เริ่ม Scanner
-     */
-
     scannerSection.style.display =
       "block";
 
@@ -1018,9 +996,9 @@ courseSelect.addEventListener(
 );
 
 
-/* =================================================
+/* =====================================================
    JSONP
-   ================================================= */
+===================================================== */
 
 function jsonp(
   action,
@@ -1049,6 +1027,18 @@ function jsonp(
       API_URL
     );
 
+
+  /*
+   * สำคัญ:
+   *
+   * action ต้องส่งแยกจาก parameter
+   *
+   * เช่น
+   * ?action=getCourses&teacherCode=T001
+   *
+   * ไม่ใช่
+   * ?action=getCourses&teacherCode...
+   */
 
   url.searchParams.set(
     "action",
@@ -1120,7 +1110,7 @@ function jsonp(
         success: false,
 
         message:
-          "เชื่อมต่อ Apps Script ไม่สำเร็จ"
+          "เชื่อมต่อระบบเช็คชื่อไม่สำเร็จ"
 
       });
 
@@ -1151,7 +1141,7 @@ function jsonp(
         success: false,
 
         message:
-          "Apps Script ไม่ตอบกลับ"
+          "ระบบไม่ตอบกลับภายในเวลาที่กำหนด"
 
       });
 
@@ -1194,9 +1184,9 @@ function jsonp(
 }
 
 
-/* =================================================
+/* =====================================================
    START SCANNER
-   ================================================= */
+===================================================== */
 
 function startScanner() {
 
@@ -1211,6 +1201,10 @@ function startScanner() {
 
 
   stopScanner();
+
+
+  processing =
+    false;
 
 
   scanner =
@@ -1234,11 +1228,15 @@ function startScanner() {
       },
 
       {
+
         fps: 10,
 
         qrbox: {
+
           width: 250,
+
           height: 250
+
         }
 
       },
@@ -1279,9 +1277,9 @@ function startScanner() {
 }
 
 
-/* =================================================
+/* =====================================================
    STOP SCANNER
-   ================================================= */
+===================================================== */
 
 function stopScanner() {
 
@@ -1304,9 +1302,9 @@ function stopScanner() {
 }
 
 
-/* =================================================
+/* =====================================================
    QR SUCCESS
-   ================================================= */
+===================================================== */
 
 function onScanSuccess(
   decodedText
@@ -1324,6 +1322,10 @@ function onScanSuccess(
   const now =
     Date.now();
 
+
+  /*
+   * ป้องกันกล้องอ่าน QR เดิมซ้ำติดกัน
+   */
 
   if (
 
@@ -1356,6 +1358,16 @@ function onScanSuccess(
     ).trim();
 
 
+  if (!studentId) {
+
+    processing =
+      false;
+
+    return;
+
+  }
+
+
   showStatus(
     "⏳ กำลังตรวจสอบและบันทึก...",
     "loading"
@@ -1369,13 +1381,31 @@ function onScanSuccess(
 }
 
 
-/* =================================================
+/* =====================================================
    SEND CHECKIN
-   ================================================= */
+===================================================== */
 
 function sendCheckin(
   studentId
 ) {
+
+  if (
+    !selectedTeacher ||
+    !selectedCourse
+  ) {
+
+    processing =
+      false;
+
+    showStatus(
+      "❌ กรุณาเลือกผู้สอนและรายวิชาก่อน",
+      "error"
+    );
+
+    return;
+
+  }
+
 
   jsonp(
 
@@ -1421,17 +1451,15 @@ function sendCheckin(
 }
 
 
-/* =================================================
+/* =====================================================
    HANDLE RESULT
-   ================================================= */
+===================================================== */
 
 function handleResult(
   data
 ) {
 
-  if (
-    !data
-  ) {
+  if (!data) {
 
     showStatus(
       "❌ ระบบไม่ตอบกลับ",
@@ -1442,6 +1470,10 @@ function handleResult(
 
   }
 
+
+  /* -----------------------------------------------
+     SUCCESS
+  ----------------------------------------------- */
 
   if (
     data.success === true
@@ -1486,7 +1518,7 @@ function handleResult(
     ) {
 
       navigator.vibrate(
-        [100,60,100]
+        [100, 60, 100]
       );
 
     }
@@ -1496,6 +1528,10 @@ function handleResult(
 
   }
 
+
+  /* -----------------------------------------------
+     DUPLICATE
+  ----------------------------------------------- */
 
   if (
     data.duplicate === true
@@ -1512,7 +1548,7 @@ function handleResult(
 
 
     resultTitle.textContent =
-      "เช็คชื่อแล้ว";
+      "เช็คชื่อแล้ววันนี้";
 
 
     resultName.textContent =
@@ -1539,6 +1575,10 @@ function handleResult(
 
   }
 
+
+  /* -----------------------------------------------
+     ERROR
+  ----------------------------------------------- */
 
   showStatus(
 
@@ -1581,9 +1621,9 @@ function handleResult(
 }
 
 
-/* =================================================
+/* =====================================================
    STATUS
-   ================================================= */
+===================================================== */
 
 function showStatus(
   message,
@@ -1599,7 +1639,6 @@ function showStatus(
     type;
 
 }
-
 
 </script>
 
