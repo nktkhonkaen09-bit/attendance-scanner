@@ -1,615 +1,446 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
+<meta charset="UTF-8">
 
-  <meta
-    name="theme-color"
-    content="#24115f"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <title>
-    ระบบเช็คชื่อนักเรียน นักศึกษา
-  </title>
+<meta
+  name="theme-color"
+  content="#24115f"
+>
 
-  <!-- QR SCANNER LIBRARY -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<title>
+ระบบเช็คชื่อนักเรียน นักศึกษา
+</title>
 
 
-  <style>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
+<style>
 
-      font-family:
-        "Noto Sans Thai",
-        "Tahoma",
-        Arial,
-        sans-serif;
+* {
+  box-sizing: border-box;
+}
 
-      background:
-        linear-gradient(
-          135deg,
-          #071a52 0%,
-          #1b1970 35%,
-          #3b1b83 70%,
-          #641fa0 100%
-        );
+body {
 
-      color: #ffffff;
-    }
+  margin: 0;
 
+  padding: 14px;
 
-    body {
-      min-height: 100vh;
-      padding: 16px;
-      overflow-x: hidden;
-    }
+  min-height: 100vh;
 
+  font-family:
+    Tahoma,
+    "Noto Sans Thai",
+    sans-serif;
 
-    /* ==============================
-       MAIN CONTAINER
-       ============================== */
+  color: white;
 
-    .app {
+  background:
+    linear-gradient(
+      135deg,
+      #071a52,
+      #211875,
+      #46208d,
+      #6824a2
+    );
 
-      width: 100%;
-      max-width: 520px;
+}
 
-      margin: 0 auto;
 
-      min-height: calc(100vh - 32px);
+.app {
 
-      display: flex;
-      flex-direction: column;
-    }
+  width: 100%;
 
+  max-width: 520px;
 
-    /* ==============================
-       HEADER
-       ============================== */
+  margin: auto;
 
-    .header {
+}
 
-      text-align: center;
 
-      padding:
-        18px
-        12px
-        12px;
+.header {
 
-    }
+  text-align: center;
 
+  padding: 16px 8px;
 
-    .logo {
+}
 
-      width: 72px;
-      height: 72px;
 
-      margin:
-        0 auto
-        12px;
+.logo {
 
-      border-radius: 22px;
+  font-size: 48px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+}
 
-      font-size: 38px;
 
-      background:
-        rgba(255,255,255,0.16);
+h1 {
 
-      border:
-        1px solid
-        rgba(255,255,255,0.25);
+  margin: 8px 0;
 
-      box-shadow:
-        0 10px 35px
-        rgba(0,0,0,0.25);
+  font-size: 23px;
 
-      backdrop-filter:
-        blur(10px);
+  line-height: 1.4;
 
-    }
+}
 
 
-    .title {
+.subtitle {
 
-      font-size: 24px;
-      line-height: 1.35;
+  opacity: .8;
 
-      font-weight: 800;
+  font-size: 14px;
 
-      margin: 0;
+}
 
-      text-shadow:
-        0 3px 12px
-        rgba(0,0,0,0.25);
 
-    }
+/* ===============================
+   SETUP CARD
+   =============================== */
 
+.setup {
 
-    .subtitle {
+  margin-top: 10px;
 
-      margin-top: 7px;
+  padding: 18px;
 
-      font-size: 14px;
+  border-radius: 22px;
 
-      color:
-        rgba(255,255,255,0.82);
+  background:
+    rgba(255,255,255,.13);
 
-    }
+  border:
+    1px solid
+    rgba(255,255,255,.2);
 
+  backdrop-filter:
+    blur(12px);
 
-    /* ==============================
-       INFO CARD
-       ============================== */
+}
 
-    .info-card {
 
-      margin-top: 10px;
+label {
 
-      padding: 18px;
+  display: block;
 
-      border-radius: 22px;
+  margin-bottom: 7px;
 
-      background:
-        rgba(255,255,255,0.12);
+  font-size: 14px;
 
-      border:
-        1px solid
-        rgba(255,255,255,0.20);
+  font-weight: bold;
 
-      box-shadow:
-        0 12px 35px
-        rgba(0,0,0,0.18);
+}
 
-      backdrop-filter:
-        blur(14px);
 
-    }
+select {
 
+  width: 100%;
 
-    .info-row {
+  height: 48px;
 
-      display: flex;
+  margin-bottom: 15px;
 
-      align-items: center;
+  padding: 0 13px;
 
-      gap: 12px;
+  border: none;
 
-      padding: 9px 0;
+  border-radius: 13px;
 
-    }
+  background: white;
 
+  color: #202040;
 
-    .info-icon {
+  font-size: 16px;
 
-      width: 40px;
-      height: 40px;
+  outline: none;
 
-      flex-shrink: 0;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
-      border-radius: 12px;
+.room {
 
-      background:
-        rgba(255,255,255,0.15);
+  padding: 13px;
 
-      font-size: 20px;
+  margin-bottom: 4px;
 
-    }
+  border-radius: 13px;
 
+  background:
+    rgba(255,255,255,.13);
 
-    .info-label {
+}
 
-      font-size: 12px;
 
-      color:
-        rgba(255,255,255,0.70);
+.room-label {
 
-    }
+  font-size: 12px;
 
+  opacity: .7;
 
-    .info-value {
+}
 
-      margin-top: 2px;
 
-      font-size: 16px;
+.room-value {
 
-      font-weight: 700;
+  margin-top: 3px;
 
-      word-break: break-word;
+  font-size: 19px;
 
-    }
+  font-weight: bold;
 
+}
 
-    /* ==============================
-       SCANNER CARD
-       ============================== */
 
-    .scanner-card {
+/* ===============================
+   BUTTON
+   =============================== */
 
-      margin-top: 16px;
+button {
 
-      padding: 16px;
+  width: 100%;
 
-      border-radius: 24px;
+  min-height: 48px;
 
-      background:
-        #ffffff;
+  border: none;
 
-      color: #1d2140;
+  border-radius: 14px;
 
-      box-shadow:
-        0 18px 50px
-        rgba(0,0,0,0.25);
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #a855f7
+    );
 
-    }
+  color: white;
 
+  font-size: 16px;
 
-    .scanner-title {
+  font-weight: bold;
 
-      text-align: center;
+  cursor: pointer;
 
-      font-size: 18px;
+}
 
-      font-weight: 800;
 
-      color: #27136b;
+button:disabled {
 
-      margin-bottom: 12px;
+  opacity: .5;
 
-    }
+}
 
 
-    .scanner-title span {
+/* ===============================
+   SCANNER
+   =============================== */
 
-      font-size: 24px;
+.scanner {
 
-      margin-right: 5px;
+  margin-top: 15px;
 
-    }
+  padding: 14px;
 
+  border-radius: 22px;
 
-    #reader {
+  background: white;
 
-      width: 100%;
+  color: #222;
 
-      overflow: hidden;
+}
 
-      border-radius: 18px;
 
-      background:
-        #111827;
+.scanner-title {
 
-    }
+  text-align: center;
 
+  margin-bottom: 12px;
 
-    /*
-     * ปรับ UI ของ html5-qrcode
-     */
+  color: #32156d;
 
-    #reader video {
+  font-weight: bold;
 
-      width: 100% !important;
+  font-size: 18px;
 
-      border-radius: 18px;
+}
 
-      object-fit: cover;
 
-    }
+#reader {
 
+  width: 100%;
 
-    #reader__scan_region {
+  overflow: hidden;
 
-      min-height: 280px;
+  border-radius: 16px;
 
-      display: flex;
+}
 
-      align-items: center;
 
-      justify-content: center;
+#reader video {
 
-      background: #111827;
+  width: 100% !important;
 
-    }
+  border-radius: 16px;
 
+}
 
-    #reader__dashboard {
 
-      padding:
-        12px 4px 4px;
+#reader button {
 
-    }
+  width: auto;
 
+  min-height: auto;
 
-    #reader__dashboard_section {
+  padding: 9px 14px;
 
-      width: 100%;
+  margin: 4px;
 
-    }
+  font-size: 14px;
 
+}
 
-    #reader button {
 
-      border: none;
+/* ===============================
+   STATUS
+   =============================== */
 
-      border-radius: 12px;
+.status {
 
-      padding:
-        10px
-        16px;
+  display: none;
 
-      margin: 4px;
+  margin-top: 12px;
 
-      background:
-        linear-gradient(
-          135deg,
-          #3520a0,
-          #6420a5
-        );
+  padding: 13px;
 
-      color: white;
+  border-radius: 13px;
 
-      font-weight: 700;
+  text-align: center;
 
-      cursor: pointer;
+  font-weight: bold;
 
-    }
+}
 
 
-    #reader select {
+.status.show {
 
-      max-width: 100%;
+  display: block;
 
-      padding: 9px;
+}
 
-      border-radius: 10px;
 
-      border:
-        1px solid
-        #d4d4d8;
+.loading {
 
-    }
+  background: #e0e7ff;
 
+  color: #3730a3;
 
-    /* ==============================
-       STATUS
-       ============================== */
+}
 
-    .status {
 
-      margin-top: 14px;
+.success {
 
-      padding: 15px;
+  background: #dcfce7;
 
-      border-radius: 16px;
+  color: #166534;
 
-      text-align: center;
+}
 
-      font-size: 15px;
 
-      font-weight: 700;
+.error {
 
-      display: none;
+  background: #fee2e2;
 
-    }
+  color: #991b1b;
 
+}
 
-    .status.show {
-      display: block;
-    }
 
+.warning {
 
-    .status.loading {
+  background: #fef3c7;
 
-      background:
-        #eef2ff;
+  color: #92400e;
 
-      color:
-        #3730a3;
+}
 
-    }
 
+/* ===============================
+   RESULT
+   =============================== */
 
-    .status.success {
+.result {
 
-      background:
-        #dcfce7;
+  display: none;
 
-      color:
-        #166534;
+  margin-top: 12px;
 
-    }
+  padding: 18px;
 
+  border-radius: 17px;
 
-    .status.error {
+  text-align: center;
 
-      background:
-        #fee2e2;
+  background: #ecfdf5;
 
-      color:
-        #991b1b;
+  color: #14532d;
 
-    }
+}
 
 
-    .status.warning {
+.result.show {
 
-      background:
-        #fef3c7;
+  display: block;
 
-      color:
-        #92400e;
+}
 
-    }
 
+.result-icon {
 
-    /* ==============================
-       RESULT CARD
-       ============================== */
+  font-size: 45px;
 
-    .result {
+}
 
-      display: none;
 
-      margin-top: 14px;
+.result-name {
 
-      padding: 18px;
+  margin-top: 5px;
 
-      border-radius: 20px;
+  font-size: 19px;
 
-      text-align: center;
+  font-weight: bold;
 
-      background:
-        linear-gradient(
-          135deg,
-          #ecfdf5,
-          #dcfce7
-        );
+}
 
-      color:
-        #14532d;
 
-      border:
-        1px solid
-        #bbf7d0;
+.result-id {
 
-    }
+  margin-top: 5px;
 
+}
 
-    .result.show {
-      display: block;
-    }
 
+.footer {
 
-    .result-icon {
+  padding: 20px;
 
-      font-size: 48px;
+  text-align: center;
 
-      line-height: 1;
+  font-size: 12px;
 
-      margin-bottom: 8px;
+  opacity: .65;
 
-    }
+}
 
 
-    .result-title {
-
-      font-size: 20px;
-
-      font-weight: 900;
-
-    }
-
-
-    .student-name {
-
-      margin-top: 8px;
-
-      font-size: 18px;
-
-      font-weight: 800;
-
-    }
-
-
-    .student-id {
-
-      margin-top: 4px;
-
-      font-size: 14px;
-
-    }
-
-
-    .result-time {
-
-      margin-top: 8px;
-
-      font-size: 13px;
-
-      opacity: 0.8;
-
-    }
-
-
-    /* ==============================
-       FOOTER
-       ============================== */
-
-    .footer {
-
-      margin-top: auto;
-
-      padding:
-        18px 8px 8px;
-
-      text-align: center;
-
-      font-size: 12px;
-
-      color:
-        rgba(255,255,255,0.65);
-
-    }
-
-
-    /* ==============================
-       MOBILE
-       ============================== */
-
-    @media (max-width: 420px) {
-
-      body {
-        padding: 10px;
-      }
-
-      .app {
-        min-height:
-          calc(100vh - 20px);
-      }
-
-      .title {
-        font-size: 21px;
-      }
-
-      .info-card {
-        padding: 14px;
-      }
-
-      .scanner-card {
-        padding: 12px;
-      }
-
-      #reader__scan_region {
-        min-height: 250px;
-      }
-
-    }
-
-
-  </style>
+</style>
 
 </head>
 
@@ -620,193 +451,147 @@
 <div class="app">
 
 
-  <!-- =================================
-       HEADER
-       ================================= -->
+<header class="header">
 
-  <header class="header">
+  <div class="logo">
+    📚
+  </div>
 
-    <div class="logo">
-      📚
-    </div>
+  <h1>
+    ระบบเช็คชื่อนักเรียน นักศึกษา
+  </h1>
 
-    <h1 class="title">
-      ระบบเช็คชื่อนักเรียน นักศึกษา
-    </h1>
-
-    <div class="subtitle">
-      วิทยาลัยเทคโนโลยีนครขอนแก่น
-    </div>
-
-  </header>
-
-
-  <!-- =================================
-       CLASS INFORMATION
-       ================================= -->
-
-  <section class="info-card">
-
-
-    <div class="info-row">
-
-      <div class="info-icon">
-        👨‍🏫
-      </div>
-
-      <div>
-
-        <div class="info-label">
-          ผู้สอน
-        </div>
-
-        <div
-          class="info-value"
-          id="teacherName"
-        >
-          กำลังโหลด...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="info-row">
-
-      <div class="info-icon">
-        📖
-      </div>
-
-      <div>
-
-        <div class="info-label">
-          รายวิชา
-        </div>
-
-        <div
-          class="info-value"
-          id="courseName"
-        >
-          กำลังโหลด...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="info-row">
-
-      <div class="info-icon">
-        🏫
-      </div>
-
-      <div>
-
-        <div class="info-label">
-          ห้องเรียน
-        </div>
-
-        <div
-          class="info-value"
-          id="roomName"
-        >
-          กำลังโหลด...
-        </div>
-
-      </div>
-
-    </div>
-
-
-  </section>
-
-
-  <!-- =================================
-       SCANNER
-       ================================= -->
-
-  <section class="scanner-card">
-
-
-    <div class="scanner-title">
-
-      <span>📷</span>
-
-      สแกน QR Code นักศึกษา
-
-    </div>
-
-
-    <div id="reader"></div>
-
-
-    <!-- STATUS -->
-
-    <div
-      id="status"
-      class="status"
-    ></div>
-
-
-    <!-- RESULT -->
-
-    <div
-      id="result"
-      class="result"
-    >
-
-      <div
-        id="resultIcon"
-        class="result-icon"
-      >
-        ✅
-      </div>
-
-      <div
-        id="resultTitle"
-        class="result-title"
-      >
-        เช็คชื่อสำเร็จ
-      </div>
-
-      <div
-        id="studentName"
-        class="student-name"
-      >
-        -
-      </div>
-
-      <div
-        id="studentId"
-        class="student-id"
-      >
-        -
-      </div>
-
-      <div
-        id="resultTime"
-        class="result-time"
-      >
-        -
-      </div>
-
-    </div>
-
-
-  </section>
-
-
-  <footer class="footer">
-
-    📱 ระบบเช็คชื่อด้วย QR Code V1
-
-    <br>
-
+  <div class="subtitle">
     วิทยาลัยเทคโนโลยีนครขอนแก่น
+  </div>
 
-  </footer>
+</header>
+
+
+<!-- =================================
+     SETUP
+     ================================= -->
+
+<section class="setup">
+
+
+<label>
+  👨‍🏫 เลือกผู้สอน
+</label>
+
+<select id="teacherSelect">
+
+  <option value="">
+    -- กำลังโหลดข้อมูลผู้สอน --
+  </option>
+
+</select>
+
+
+<label>
+  📚 เลือกรายวิชา
+</label>
+
+<select
+  id="courseSelect"
+  disabled
+>
+
+  <option value="">
+    -- กรุณาเลือกผู้สอนก่อน --
+  </option>
+
+</select>
+
+
+<div class="room">
+
+  <div class="room-label">
+    🏫 ห้องเรียน
+  </div>
+
+  <div
+    id="roomValue"
+    class="room-value"
+  >
+    -
+  </div>
+
+</div>
+
+
+</section>
+
+
+<!-- =================================
+     SCANNER
+     ================================= -->
+
+<section
+  id="scannerSection"
+  class="scanner"
+  style="display:none;"
+>
+
+<div class="scanner-title">
+
+  📷 สแกน QR Code นักศึกษา
+
+</div>
+
+
+<div id="reader"></div>
+
+
+<div
+  id="status"
+  class="status"
+></div>
+
+
+<div
+  id="result"
+  class="result"
+>
+
+  <div
+    id="resultIcon"
+    class="result-icon"
+  >
+    ✅
+  </div>
+
+  <div
+    id="resultTitle"
+  >
+    เช็คชื่อสำเร็จ
+  </div>
+
+  <div
+    id="resultName"
+    class="result-name"
+  >
+    -
+  </div>
+
+  <div
+    id="resultId"
+    class="result-id"
+  >
+    -
+  </div>
+
+</div>
+
+
+</section>
+
+
+<footer class="footer">
+
+  📱 ระบบเช็คชื่อด้วย QR Code V1.1
+
+</footer>
 
 
 </div>
@@ -815,636 +600,177 @@
 
 <script>
 
-/* =====================================================
-   CONFIGURATION
-   ===================================================== */
+
+/* =================================================
+   CONFIG
+   ================================================= */
 
 
 /*
- * URL ของ Google Apps Script
- *
- * เป็น URL ที่คุณให้มา
+ * นำ URL Apps Script เดิมของคุณ
+ * มาใส่แทนข้อความด้านล่าง
  */
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbyZnE0RIZIyy-3PKoV69R67eLaUYxgkgfYy4GjkCK19IqubmKI4iHbIdrn9WMlbhfZxmQ/exec";
 
 
-/*
- * อ่านค่าจาก URL
- *
- * ตัวอย่าง:
- *
- * ?teacherCode=T001
- * &teacherName=ครูทดสอบ
- * &courseCode=20204-2008
- * &courseName=การสร้างเว็บไซต์
- * &room=COM01
- */
-
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
-
-
-/*
- * ข้อมูลห้องเรียน / วิชา
- */
-
-const CLASS_INFO = {
-
-  teacherCode:
-    params.get("teacherCode")
-    || "T001",
-
-  teacherName:
-    params.get("teacherName")
-    || "ครูทดสอบ",
-
-  courseCode:
-    params.get("courseCode")
-    || "20204-2008",
-
-  courseName:
-    params.get("courseName")
-    || "การสร้างเว็บไซต์",
-
-  room:
-    params.get("room")
-    || "COM01"
-
-};
-
-
-/* =====================================================
+/* =================================================
    DOM
-   ===================================================== */
+   ================================================= */
 
-const teacherNameEl =
+const teacherSelect =
   document.getElementById(
-    "teacherName"
+    "teacherSelect"
   );
 
-const courseNameEl =
+
+const courseSelect =
   document.getElementById(
-    "courseName"
+    "courseSelect"
   );
 
-const roomNameEl =
+
+const roomValue =
   document.getElementById(
-    "roomName"
+    "roomValue"
   );
+
+
+const scannerSection =
+  document.getElementById(
+    "scannerSection"
+  );
+
 
 const statusEl =
   document.getElementById(
     "status"
   );
 
+
 const resultEl =
   document.getElementById(
     "result"
   );
 
-const resultIconEl =
+
+const resultIcon =
   document.getElementById(
     "resultIcon"
   );
 
-const resultTitleEl =
+
+const resultTitle =
   document.getElementById(
     "resultTitle"
   );
 
-const studentNameEl =
-  document.getElementById(
-    "studentName"
-  );
 
-const studentIdEl =
+const resultName =
   document.getElementById(
-    "studentId"
-  );
-
-const resultTimeEl =
-  document.getElementById(
-    "resultTime"
+    "resultName"
   );
 
 
-/* =====================================================
-   SHOW CLASS INFORMATION
-   ===================================================== */
-
-teacherNameEl.textContent =
-  CLASS_INFO.teacherName;
-
-courseNameEl.textContent =
-  CLASS_INFO.courseName;
-
-roomNameEl.textContent =
-  CLASS_INFO.room;
+const resultId =
+  document.getElementById(
+    "resultId"
+  );
 
 
-/* =====================================================
-   SCANNER STATE
-   ===================================================== */
+/* =================================================
+   STATE
+   ================================================= */
+
+let selectedTeacher = null;
+
+let selectedCourse = null;
 
 let scanner = null;
 
 let processing = false;
 
-let lastScannedCode = "";
+let lastCode = "";
 
 let lastScanTime = 0;
 
 
-/*
- * ป้องกัน QR เดิมถูกอ่านหลายครั้ง
- */
+/* =================================================
+   INITIAL LOAD
+   ================================================= */
 
-const DUPLICATE_DELAY = 3000;
+window.addEventListener(
+  "load",
+  function() {
 
-
-/* =====================================================
-   STATUS FUNCTIONS
-   ===================================================== */
-
-function showStatus(
-  message,
-  type
-) {
-
-  statusEl.textContent =
-    message;
-
-  statusEl.className =
-    "status show " +
-    type;
-
-}
-
-
-function hideStatus() {
-
-  statusEl.className =
-    "status";
-
-}
-
-
-/* =====================================================
-   RESULT FUNCTIONS
-   ===================================================== */
-
-function showResult(
-  icon,
-  title,
-  name,
-  studentId,
-  time,
-  type
-) {
-
-  resultIconEl.textContent =
-    icon;
-
-  resultTitleEl.textContent =
-    title;
-
-  studentNameEl.textContent =
-    name
-      ? "👨‍🎓 " + name
-      : "";
-
-  studentIdEl.textContent =
-    studentId
-      ? "รหัสนักศึกษา: " +
-        studentId
-      : "";
-
-  resultTimeEl.textContent =
-    time
-      ? "🕐 " + time
-      : "";
-
-  resultEl.className =
-    "result show";
-
-
-  /*
-   * เปลี่ยนสีตามผลลัพธ์
-   */
-
-  if (
-    type === "error"
-  ) {
-
-    resultEl.style.background =
-      "linear-gradient(135deg,#fff1f2,#ffe4e6)";
-
-    resultEl.style.color =
-      "#9f1239";
-
-    resultEl.style.borderColor =
-      "#fecdd3";
+    loadTeachers();
 
   }
-  else {
+);
 
-    resultEl.style.background =
-      "linear-gradient(135deg,#ecfdf5,#dcfce7)";
 
-    resultEl.style.color =
-      "#14532d";
+/* =================================================
+   LOAD TEACHERS
+   ================================================= */
 
-    resultEl.style.borderColor =
-      "#bbf7d0";
+function loadTeachers() {
 
-  }
+  teacherSelect.innerHTML =
 
-}
+    '<option value="">⏳ กำลังโหลด...</option>';
 
 
-/* =====================================================
-   HIDE RESULT
-   ===================================================== */
+  jsonp(
+    "getTeachers",
+    {},
+    function(data) {
 
-function hideResult() {
+      if (
+        !data ||
+        data.success !== true
+      ) {
 
-  resultEl.className =
-    "result";
-
-}
-
-
-/* =====================================================
-   QR SCAN SUCCESS
-   ===================================================== */
-
-async function onScanSuccess(
-  decodedText
-) {
-
-
-  /*
-   * ป้องกันการส่งซ้ำ
-   */
-
-  const now =
-    Date.now();
-
-
-  if (
-    processing
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-
-    decodedText ===
-      lastScannedCode &&
-
-    now - lastScanTime <
-      DUPLICATE_DELAY
-
-  ) {
-
-    return;
-
-  }
-
-
-  lastScannedCode =
-    decodedText;
-
-  lastScanTime =
-    now;
-
-
-  /*
-   * หยุดประมวลผล QR ชั่วคราว
-   */
-
-  processing = true;
-
-
-  hideResult();
-
-
-  showStatus(
-    "⏳ กำลังบันทึกการเช็คชื่อ...",
-    "loading"
-  );
-
-
-  /*
-   * ตัดช่องว่าง
-   */
-
-  const studentId =
-    String(
-      decodedText
-    ).trim();
-
-
-  /*
-   * QR V1 ต้องมีเพียงรหัสนักศึกษา
-   */
-
-  if (
-    !studentId
-  ) {
-
-    showStatus(
-      "❌ QR Code ไม่มีข้อมูลรหัสนักศึกษา",
-      "error"
-    );
-
-    processing =
-      false;
-
-    return;
-
-  }
-
-
-  /*
-   * ส่งไป Apps Script
-   */
-
-  try {
-
-    await sendCheckin(
-      studentId
-    );
-
-  }
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-    showStatus(
-      "❌ ไม่สามารถเชื่อมต่อระบบได้",
-      "error"
-    );
-
-  }
-
-
-  /*
-   * เปิดให้สแกนคนต่อไป
-   */
-
-  setTimeout(
-    function() {
-
-      processing =
-        false;
-
-    },
-    1000
-  );
-
-}
-
-
-/* =====================================================
-   SEND CHECK-IN
-   ===================================================== */
-
-
-/*
- * ใช้ JSONP
- *
- * เพราะ GitHub Pages และ Apps Script
- * อยู่คนละโดเมน
- */
-
-function sendCheckin(
-  studentId
-) {
-
-  return new Promise(
-    function(
-      resolve,
-      reject
-    ) {
-
-
-      /*
-       * ชื่อ callback
-       */
-
-      const callbackName =
-        "attendanceCallback_" +
-        Date.now() +
-        "_" +
-        Math.floor(
-          Math.random() * 100000
+        showStatus(
+          "❌ ไม่สามารถโหลดข้อมูลผู้สอนได้",
+          "error"
         );
 
-
-      /*
-       * สร้าง URL
-       */
-
-      const url =
-        new URL(
-          API_URL
-        );
-
-
-      url.searchParams.set(
-        "action",
-        "checkin"
-      );
-
-
-      url.searchParams.set(
-        "studentId",
-        studentId
-      );
-
-
-      url.searchParams.set(
-        "teacherCode",
-        CLASS_INFO.teacherCode
-      );
-
-
-      url.searchParams.set(
-        "courseCode",
-        CLASS_INFO.courseCode
-      );
-
-
-      url.searchParams.set(
-        "room",
-        CLASS_INFO.room
-      );
-
-
-      url.searchParams.set(
-        "callback",
-        callbackName
-      );
-
-
-      /*
-       * สร้าง callback
-       */
-
-      window[
-        callbackName
-      ] =
-        function(
-          data
-        ) {
-
-          try {
-
-            handleApiResponse(
-              data
-            );
-
-            resolve(
-              data
-            );
-
-          }
-          catch (
-            error
-          ) {
-
-            reject(
-              error
-            );
-
-          }
-          finally {
-
-            cleanup();
-
-          }
-
-        };
-
-
-      /*
-       * สร้าง script
-       */
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      script.src =
-        url.toString();
-
-
-      script.async =
-        true;
-
-
-      /*
-       * กรณีโหลดไม่ได้
-       */
-
-      script.onerror =
-        function() {
-
-          cleanup();
-
-          reject(
-            new Error(
-              "API connection failed"
-            )
-          );
-
-        };
-
-
-      document.body.appendChild(
-        script
-      );
-
-
-      /*
-       * timeout
-       */
-
-      const timeout =
-        setTimeout(
-          function() {
-
-            cleanup();
-
-            reject(
-              new Error(
-                "API timeout"
-              )
-            );
-
-            showStatus(
-              "❌ ระบบตอบกลับช้า กรุณาลองใหม่",
-              "error"
-            );
-
-          },
-          15000
-        );
-
-
-      /*
-       * cleanup
-       */
-
-      function cleanup() {
-
-        clearTimeout(
-          timeout
-        );
-
-
-        if (
-          script.parentNode
-        ) {
-
-          script.parentNode
-            .removeChild(
-              script
-            );
-
-        }
-
-
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        }
-        catch (
-          error
-        ) {
-
-          window[
-            callbackName
-          ] = undefined;
-
-        }
+        return;
 
       }
+
+
+      teacherSelect.innerHTML =
+
+        '<option value="">-- เลือกผู้สอน --</option>';
+
+
+      data.teachers.forEach(
+        function(teacher) {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            teacher.code;
+
+
+          option.textContent =
+            teacher.code +
+            " - " +
+            teacher.name;
+
+
+          teacherSelect.appendChild(
+            option
+          );
+
+        }
+      );
 
     }
   );
@@ -1452,212 +778,200 @@ function sendCheckin(
 }
 
 
-/* =====================================================
-   HANDLE API RESPONSE
-   ===================================================== */
+/* =================================================
+   TEACHER CHANGE
+   ================================================= */
 
-function handleApiResponse(
-  data
+teacherSelect.addEventListener(
+  "change",
+  function() {
+
+    const code =
+      teacherSelect.value;
+
+
+    selectedTeacher =
+      null;
+
+
+    selectedCourse =
+      null;
+
+
+    roomValue.textContent =
+      "-";
+
+
+    scannerSection.style.display =
+      "none";
+
+
+    stopScanner();
+
+
+    courseSelect.disabled =
+      true;
+
+
+    courseSelect.innerHTML =
+
+      '<option value="">⏳ กำลังโหลด...</option>';
+
+
+    if (!code) {
+
+      courseSelect.innerHTML =
+
+        '<option value="">-- กรุณาเลือกผู้สอนก่อน --</option>';
+
+      return;
+
+    }
+
+
+    /*
+     * ค้นหาชื่อผู้สอนจาก option
+     */
+
+    const option =
+      teacherSelect.options[
+        teacherSelect.selectedIndex
+      ];
+
+
+    selectedTeacher = {
+
+      code: code,
+
+      name:
+        option.textContent
+          .replace(
+            code + " - ",
+            ""
+          )
+
+    };
+
+
+    loadCourses(code);
+
+  }
+);
+
+
+/* =================================================
+   LOAD COURSES
+   ================================================= */
+
+function loadCourses(
+  teacherCode
 ) {
 
+  jsonp(
 
-  console.log(
-    "API Response:",
-    data
-  );
+    "getCourses",
 
+    {
+      teacherCode:
+        teacherCode
+    },
 
-  /*
-   * ไม่มีข้อมูลตอบกลับ
-   */
+    function(data) {
 
-  if (
-    !data
-  ) {
+      if (
+        !data ||
+        data.success !== true
+      ) {
 
-    showStatus(
-      "❌ ระบบไม่ส่งข้อมูลกลับมา",
-      "error"
-    );
+        courseSelect.innerHTML =
 
-    return;
+          '<option value="">❌ โหลดรายวิชาไม่สำเร็จ</option>';
 
-  }
+        return;
 
+      }
 
-  /*
-   * สำเร็จ
-   */
 
-  if (
-    data.success === true
-  ) {
+      courseSelect.innerHTML =
 
+        '<option value="">-- เลือกรายวิชา --</option>';
 
-    showStatus(
-      "✅ บันทึกการเช็คชื่อสำเร็จ",
-      "success"
-    );
 
+      data.courses.forEach(
+        function(course) {
 
-    showResult(
+          const option =
+            document.createElement(
+              "option"
+            );
 
-      "✅",
 
-      "เช็คชื่อสำเร็จ",
+          option.value =
+            JSON.stringify(
+              course
+            );
 
-      data.student &&
-      data.student.name
-        ? data.student.name
-        : "-",
 
-      data.student &&
-      data.student.studentId
-        ? data.student.studentId
-        : "-",
+          option.textContent =
+            course.code +
+            " - " +
+            course.name;
 
-      data.time
-        ? data.time
-        : "-",
 
-      "success"
+          courseSelect.appendChild(
+            option
+          );
 
-    );
+        }
+      );
 
 
-    /*
-     * เสียงแจ้งเตือน
-     */
+      courseSelect.disabled =
+        false;
 
-    playSuccessSound();
 
+      if (
+        data.courses.length === 0
+      ) {
 
-    /*
-     * สั่นมือถือ
-     */
+        courseSelect.innerHTML =
 
-    vibrate(
-      [100, 60, 100]
-    );
+          '<option value="">ไม่มีรายวิชาสำหรับผู้สอนนี้</option>';
 
+      }
 
-    return;
+    }
 
-  }
-
-
-  /*
-   * เช็คชื่อซ้ำ
-   */
-
-  if (
-    data.duplicate === true
-  ) {
-
-
-    showStatus(
-      "⚠️ นักศึกษาคนนี้เช็คชื่อแล้ว",
-      "warning"
-    );
-
-
-    showResult(
-
-      "⚠️",
-
-      "เช็คชื่อแล้ว",
-
-      data.student &&
-      data.student.name
-        ? data.student.name
-        : "-",
-
-      data.student &&
-      data.student.studentId
-        ? data.student.studentId
-        : "-",
-
-      data.time
-        ? data.time
-        : "-",
-
-      "error"
-
-    );
-
-
-    vibrate(
-      [200]
-    );
-
-
-    return;
-
-  }
-
-
-  /*
-   * Error จากระบบ
-   */
-
-  showStatus(
-
-    "❌ " +
-    (
-      data.message ||
-      "ไม่สามารถเช็คชื่อได้"
-    ),
-
-    "error"
-
-  );
-
-
-  showResult(
-
-    "❌",
-
-    "เช็คชื่อไม่สำเร็จ",
-
-    data.student &&
-    data.student.name
-      ? data.student.name
-      : "",
-
-    data.student &&
-    data.student.studentId
-      ? data.student.studentId
-      : "",
-
-    "",
-
-    "error"
-
-  );
-
-
-  vibrate(
-    [200, 100, 200]
   );
 
 }
 
 
-/* =====================================================
-   SUCCESS SOUND
-   ===================================================== */
+/* =================================================
+   COURSE CHANGE
+   ================================================= */
 
-function playSuccessSound() {
+courseSelect.addEventListener(
+  "change",
+  function() {
 
-  try {
+    selectedCourse =
+      null;
 
-    const AudioContext =
-      window.AudioContext ||
-      window.webkitAudioContext;
+
+    roomValue.textContent =
+      "-";
+
+
+    scannerSection.style.display =
+      "none";
+
+
+    stopScanner();
 
 
     if (
-      !AudioContext
+      !courseSelect.value
     ) {
 
       return;
@@ -1665,124 +979,238 @@ function playSuccessSound() {
     }
 
 
-    const context =
-      new AudioContext();
+    try {
+
+      selectedCourse =
+        JSON.parse(
+          courseSelect.value
+        );
+
+    }
+    catch (error) {
+
+      showStatus(
+        "❌ ข้อมูลรายวิชาไม่ถูกต้อง",
+        "error"
+      );
+
+      return;
+
+    }
 
 
-    const oscillator =
-      context.createOscillator();
+    roomValue.textContent =
+      selectedCourse.room ||
+      "-";
 
 
-    const gain =
-      context.createGain();
+    /*
+     * เริ่ม Scanner
+     */
+
+    scannerSection.style.display =
+      "block";
 
 
-    oscillator.type =
-      "sine";
-
-
-    oscillator.frequency.value =
-      880;
-
-
-    gain.gain.value =
-      0.12;
-
-
-    oscillator.connect(
-      gain
-    );
-
-
-    gain.connect(
-      context.destination
-    );
-
-
-    oscillator.start();
-
-
-    setTimeout(
-      function() {
-
-        oscillator.frequency.value =
-          1175;
-
-      },
-      100
-    );
-
-
-    setTimeout(
-      function() {
-
-        oscillator.stop();
-
-        context.close();
-
-      },
-      220
-    );
+    startScanner();
 
   }
-  catch (
-    error
-  ) {
-
-    console.log(
-      "Sound unavailable"
-    );
-
-  }
-
-}
+);
 
 
-/* =====================================================
-   VIBRATION
-   ===================================================== */
+/* =================================================
+   JSONP
+   ================================================= */
 
-function vibrate(
-  pattern
+function jsonp(
+  action,
+  params,
+  callback
 ) {
 
-  try {
+  const callbackName =
+    "cb_" +
+    Date.now() +
+    "_" +
+    Math.floor(
+      Math.random() *
+      100000
+    );
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  const url =
+    new URL(
+      API_URL
+    );
+
+
+  url.searchParams.set(
+    "action",
+    action
+  );
+
+
+  url.searchParams.set(
+    "callback",
+    callbackName
+  );
+
+
+  Object.keys(params)
+    .forEach(
+      function(key) {
+
+        url.searchParams.set(
+          key,
+          params[key]
+        );
+
+      }
+    );
+
+
+  let finished = false;
+
+
+  window[callbackName] =
+    function(data) {
+
+      if (finished) {
+        return;
+      }
+
+
+      finished = true;
+
+
+      cleanup();
+
+
+      callback(data);
+
+    };
+
+
+  script.src =
+    url.toString();
+
+
+  script.onerror =
+    function() {
+
+      if (finished) {
+        return;
+      }
+
+
+      finished = true;
+
+
+      cleanup();
+
+
+      callback({
+
+        success: false,
+
+        message:
+          "เชื่อมต่อ Apps Script ไม่สำเร็จ"
+
+      });
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+
+  setTimeout(
+    function() {
+
+      if (finished) {
+        return;
+      }
+
+
+      finished = true;
+
+
+      cleanup();
+
+
+      callback({
+
+        success: false,
+
+        message:
+          "Apps Script ไม่ตอบกลับ"
+
+      });
+
+    },
+    15000
+  );
+
+
+  function cleanup() {
 
     if (
-      navigator.vibrate
+      script.parentNode
     ) {
 
-      navigator.vibrate(
-        pattern
-      );
+      script.parentNode
+        .removeChild(
+          script
+        );
+
+    }
+
+
+    try {
+
+      delete window[
+        callbackName
+      ];
+
+    }
+    catch (e) {
+
+      window[
+        callbackName
+      ] = undefined;
 
     }
 
   }
-  catch (
-    error
-  ) {
-
-    console.log(
-      "Vibration unavailable"
-    );
-
-  }
 
 }
 
 
-/* =====================================================
+/* =================================================
    START SCANNER
-   ===================================================== */
+   ================================================= */
 
 function startScanner() {
 
+  if (
+    !selectedTeacher ||
+    !selectedCourse
+  ) {
 
-  showStatus(
-    "📷 กำลังเตรียมกล้อง...",
-    "loading"
-  );
+    return;
+
+  }
+
+
+  stopScanner();
 
 
   scanner =
@@ -1791,55 +1219,11 @@ function startScanner() {
     );
 
 
-  const config = {
+  showStatus(
+    "📷 กำลังเปิดกล้อง...",
+    "loading"
+  );
 
-    fps: 10,
-
-    qrbox: function(
-      viewfinderWidth,
-      viewfinderHeight
-    ) {
-
-      const minEdge =
-        Math.min(
-          viewfinderWidth,
-          viewfinderHeight
-        );
-
-
-      const size =
-        Math.floor(
-          minEdge * 0.70
-        );
-
-
-      return {
-
-        width:
-          Math.min(
-            320,
-            size
-          ),
-
-        height:
-          Math.min(
-            320,
-            size
-          )
-
-      };
-
-    },
-
-    aspectRatio:
-      1.0
-
-  };
-
-
-  /*
-   * กล้องหลัง
-   */
 
   scanner
     .start(
@@ -1849,20 +1233,19 @@ function startScanner() {
           "environment"
       },
 
-      config,
+      {
+        fps: 10,
+
+        qrbox: {
+          width: 250,
+          height: 250
+        }
+
+      },
 
       onScanSuccess,
 
-      function(
-        errorMessage
-      ) {
-
-        /*
-         * ไม่ต้องแสดง error
-         * ทุก frame เพราะจะเกิดถี่มาก
-         */
-
-      }
+      function() {}
 
     )
 
@@ -1886,12 +1269,8 @@ function startScanner() {
 
 
         showStatus(
-
-          "❌ ไม่สามารถเปิดกล้องได้ " +
-          "กรุณาอนุญาตการใช้กล้อง",
-
+          "❌ ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตการใช้กล้อง",
           "error"
-
         );
 
       }
@@ -1900,44 +1279,330 @@ function startScanner() {
 }
 
 
-/* =====================================================
-   PAGE LOAD
-   ===================================================== */
+/* =================================================
+   STOP SCANNER
+   ================================================= */
 
-window.addEventListener(
-  "load",
-  function() {
+function stopScanner() {
 
-    startScanner();
+  if (!scanner) {
+
+    return;
 
   }
-);
 
 
-/* =====================================================
-   PAGE CLOSE
-   ===================================================== */
+  scanner
+    .stop()
+    .catch(
+      function() {}
+    );
 
-window.addEventListener(
-  "beforeunload",
-  function() {
 
-    if (
-      scanner
-    ) {
+  scanner = null;
 
-      scanner
-        .stop()
-        .catch(
-          function() {}
-        );
+}
+
+
+/* =================================================
+   QR SUCCESS
+   ================================================= */
+
+function onScanSuccess(
+  decodedText
+) {
+
+  if (
+    processing
+  ) {
+
+    return;
+
+  }
+
+
+  const now =
+    Date.now();
+
+
+  if (
+
+    decodedText === lastCode &&
+
+    now - lastScanTime < 3000
+
+  ) {
+
+    return;
+
+  }
+
+
+  lastCode =
+    decodedText;
+
+
+  lastScanTime =
+    now;
+
+
+  processing =
+    true;
+
+
+  const studentId =
+    String(
+      decodedText
+    ).trim();
+
+
+  showStatus(
+    "⏳ กำลังตรวจสอบและบันทึก...",
+    "loading"
+  );
+
+
+  sendCheckin(
+    studentId
+  );
+
+}
+
+
+/* =================================================
+   SEND CHECKIN
+   ================================================= */
+
+function sendCheckin(
+  studentId
+) {
+
+  jsonp(
+
+    "checkin",
+
+    {
+
+      studentId:
+        studentId,
+
+      teacherCode:
+        selectedTeacher.code,
+
+      courseCode:
+        selectedCourse.code,
+
+      room:
+        selectedCourse.room
+
+    },
+
+    function(data) {
+
+      handleResult(
+        data
+      );
+
+
+      setTimeout(
+        function() {
+
+          processing =
+            false;
+
+        },
+        1000
+      );
 
     }
 
+  );
+
+}
+
+
+/* =================================================
+   HANDLE RESULT
+   ================================================= */
+
+function handleResult(
+  data
+) {
+
+  if (
+    !data
+  ) {
+
+    showStatus(
+      "❌ ระบบไม่ตอบกลับ",
+      "error"
+    );
+
+    return;
+
   }
-);
+
+
+  if (
+    data.success === true
+  ) {
+
+    showStatus(
+      "✅ บันทึกการเช็คชื่อสำเร็จ",
+      "success"
+    );
+
+
+    resultIcon.textContent =
+      "✅";
+
+
+    resultTitle.textContent =
+      "เช็คชื่อสำเร็จ";
+
+
+    resultName.textContent =
+      "👨‍🎓 " +
+      (
+        data.student?.name ||
+        "-"
+      );
+
+
+    resultId.textContent =
+      "รหัสนักศึกษา: " +
+      (
+        data.student?.studentId ||
+        "-"
+      );
+
+
+    resultEl.className =
+      "result show";
+
+
+    if (
+      navigator.vibrate
+    ) {
+
+      navigator.vibrate(
+        [100,60,100]
+      );
+
+    }
+
+
+    return;
+
+  }
+
+
+  if (
+    data.duplicate === true
+  ) {
+
+    showStatus(
+      "⚠️ นักศึกษาคนนี้เช็คชื่อแล้วในวันนี้",
+      "warning"
+    );
+
+
+    resultIcon.textContent =
+      "⚠️";
+
+
+    resultTitle.textContent =
+      "เช็คชื่อแล้ว";
+
+
+    resultName.textContent =
+      "👨‍🎓 " +
+      (
+        data.student?.name ||
+        "-"
+      );
+
+
+    resultId.textContent =
+      "รหัสนักศึกษา: " +
+      (
+        data.student?.studentId ||
+        "-"
+      );
+
+
+    resultEl.className =
+      "result show";
+
+
+    return;
+
+  }
+
+
+  showStatus(
+
+    "❌ " +
+    (
+      data.message ||
+      "เช็คชื่อไม่สำเร็จ"
+    ),
+
+    "error"
+
+  );
+
+
+  resultIcon.textContent =
+    "❌";
+
+
+  resultTitle.textContent =
+    "เช็คชื่อไม่สำเร็จ";
+
+
+  resultName.textContent =
+    data.student?.name
+      ? "👨‍🎓 " +
+        data.student.name
+      : "";
+
+
+  resultId.textContent =
+    data.student?.studentId
+      ? "รหัสนักศึกษา: " +
+        data.student.studentId
+      : "";
+
+
+  resultEl.className =
+    "result show";
+
+}
+
+
+/* =================================================
+   STATUS
+   ================================================= */
+
+function showStatus(
+  message,
+  type
+) {
+
+  statusEl.textContent =
+    message;
+
+
+  statusEl.className =
+    "status show " +
+    type;
+
+}
+
 
 </script>
 
 </body>
+
 </html>
