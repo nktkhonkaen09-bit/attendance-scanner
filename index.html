@@ -1,1 +1,1606 @@
+<!DOCTYPE html>
+<html lang="th">
 
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>QR Check-in | วิทยาลัยเทคโนโลยีนครขอนแก่น</title>
+
+  <!-- QR Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        "Noto Sans Thai",
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(139,92,246,.65),
+          transparent 35%
+        ),
+
+        radial-gradient(
+          circle at 90% 90%,
+          rgba(37,99,235,.65),
+          transparent 35%
+        ),
+
+        linear-gradient(
+          135deg,
+          #312e81,
+          #4c1d95,
+          #1e3a8a
+        );
+
+      padding: 15px;
+
+    }
+
+
+    .container {
+
+      width: 100%;
+
+      max-width: 600px;
+
+      margin: auto;
+
+    }
+
+
+    .header {
+
+      text-align: center;
+
+      padding: 10px 5px 18px;
+
+    }
+
+
+    .logo {
+
+      font-size: 45px;
+
+    }
+
+
+    .title {
+
+      font-size: 28px;
+
+      font-weight: 800;
+
+      line-height: 1.3;
+
+    }
+
+
+    .school {
+
+      margin-top: 7px;
+
+      font-size: 14px;
+
+      opacity: .85;
+
+    }
+
+
+    .info-card {
+
+      background:
+        rgba(255,255,255,.96);
+
+      color: #1f2937;
+
+      border-radius: 22px;
+
+      padding: 18px;
+
+      margin-bottom: 15px;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.22);
+
+    }
+
+
+    .info-title {
+
+      font-weight: 800;
+
+      color: #4338ca;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .info-row {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      padding: 8px 0;
+
+      border-bottom:
+        1px solid #e5e7eb;
+
+    }
+
+
+    .info-row:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .info-label {
+
+      color: #6b7280;
+
+    }
+
+
+    .info-value {
+
+      font-weight: 800;
+
+      text-align: right;
+
+    }
+
+
+    .scanner-card {
+
+      background:
+        rgba(255,255,255,.97);
+
+      border-radius: 22px;
+
+      padding: 15px;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.22);
+
+    }
+
+
+    #reader {
+
+      width: 100%;
+
+      overflow: hidden;
+
+      border-radius: 16px;
+
+    }
+
+
+    #reader video {
+
+      border-radius: 14px;
+
+    }
+
+
+    .status {
+
+      margin-top: 14px;
+
+      padding: 14px;
+
+      border-radius: 14px;
+
+      text-align: center;
+
+      font-weight: 800;
+
+      color: #374151;
+
+      background: #f3f4f6;
+
+    }
+
+
+    .status.success {
+
+      color: #166534;
+
+      background: #dcfce7;
+
+    }
+
+
+    .status.error {
+
+      color: #991b1b;
+
+      background: #fee2e2;
+
+    }
+
+
+    .status.warning {
+
+      color: #92400e;
+
+      background: #fef3c7;
+
+    }
+
+
+    .student-card {
+
+      display: none;
+
+      margin-top: 14px;
+
+      padding: 18px;
+
+      border-radius: 18px;
+
+      text-align: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #eef2ff,
+          #f5f3ff
+        );
+
+      color: #312e81;
+
+    }
+
+
+    .student-card.show {
+
+      display: block;
+
+    }
+
+
+    .student-icon {
+
+      font-size: 42px;
+
+    }
+
+
+    .student-name {
+
+      font-size: 22px;
+
+      font-weight: 900;
+
+      margin: 5px 0;
+
+    }
+
+
+    .student-id {
+
+      font-size: 17px;
+
+      font-weight: 700;
+
+    }
+
+
+    .time {
+
+      margin-top: 8px;
+
+      color: #4b5563;
+
+    }
+
+
+    .scan-next {
+
+      display: none;
+
+      width: 100%;
+
+      margin-top: 12px;
+
+      padding: 15px;
+
+      border: none;
+
+      border-radius: 15px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #4f46e5,
+          #7c3aed
+        );
+
+      font-size: 17px;
+
+      font-weight: 800;
+
+    }
+
+
+    .scan-next.show {
+
+      display: block;
+
+    }
+
+
+    .loading {
+
+      display: none;
+
+      text-align: center;
+
+      padding: 15px;
+
+      color: #4338ca;
+
+      font-weight: 800;
+
+    }
+
+
+    .loading.show {
+
+      display: block;
+
+    }
+
+
+    .footer {
+
+      text-align: center;
+
+      margin-top: 18px;
+
+      font-size: 12px;
+
+      opacity: .7;
+
+    }
+
+
+    @media(max-width:480px) {
+
+      .title {
+
+        font-size: 24px;
+
+      }
+
+      .info-card,
+      .scanner-card {
+
+        border-radius: 18px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <div class="logo">
+      📷
+    </div>
+
+    <div class="title">
+      ระบบเช็คชื่อ QR Code
+    </div>
+
+    <div class="school">
+      วิทยาลัยเทคโนโลยีนครขอนแก่น
+    </div>
+
+  </div>
+
+
+  <!-- CLASS INFORMATION -->
+
+  <div class="info-card">
+
+    <div class="info-title">
+      📚 ข้อมูลการเช็คชื่อ
+    </div>
+
+
+    <div class="info-row">
+
+      <span class="info-label">
+        👨‍🏫 ผู้สอน
+      </span>
+
+      <span
+        id="teacher"
+        class="info-value"
+      >
+        -
+      </span>
+
+    </div>
+
+
+    <div class="info-row">
+
+      <span class="info-label">
+        📖 รายวิชา
+      </span>
+
+      <span
+        id="course"
+        class="info-value"
+      >
+        -
+      </span>
+
+    </div>
+
+
+    <div class="info-row">
+
+      <span class="info-label">
+        🏫 ห้อง
+      </span>
+
+      <span
+        id="room"
+        class="info-value"
+      >
+        -
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- SCANNER -->
+
+  <div class="scanner-card">
+
+    <div id="reader"></div>
+
+
+    <div
+      id="status"
+      class="status"
+    >
+      📷 กำลังเตรียมกล้อง...
+    </div>
+
+
+    <div
+      id="loading"
+      class="loading"
+    >
+      ⏳ กำลังตรวจสอบข้อมูล...
+    </div>
+
+
+    <!-- STUDENT RESULT -->
+
+    <div
+      id="studentCard"
+      class="student-card"
+    >
+
+      <div class="student-icon">
+        👨‍🎓
+      </div>
+
+      <div
+        id="studentName"
+        class="student-name"
+      >
+        -
+      </div>
+
+      <div
+        id="studentId"
+        class="student-id"
+      >
+        -
+      </div>
+
+      <div
+        id="studentRoom"
+        class="time"
+      >
+        -
+      </div>
+
+      <div
+        id="attendanceTime"
+        class="time"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <button
+      id="scanNext"
+      class="scan-next"
+      onclick="scanNext()"
+    >
+
+      📷 สแกนนักศึกษาคนต่อไป
+
+    </button>
+
+  </div>
+
+
+  <div class="footer">
+
+    💙 QR Attendance V1
+
+  </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbyZnE0RIZIyy-3PKoV69R67eLaUYxgkgfYy4GjkCK19IqubmKI4iHbIdrn9WMlbhfZxmQ/exec';
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+
+let scanner = null;
+
+let scanning = false;
+
+let processing = false;
+
+let lastScan = '';
+
+let lastScanTime = 0;
+
+let classData = {};
+
+
+/* =====================================================
+   START
+===================================================== */
+
+
+window.addEventListener(
+  'load',
+  function() {
+
+    loadClassData();
+
+  }
+);
+
+
+/* =====================================================
+   LOAD CLASS DATA
+===================================================== */
+
+
+function loadClassData() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  classData.teacherCode =
+    params.get(
+      'teacherCode'
+    ) || '';
+
+
+  classData.teacherName =
+    params.get(
+      'teacherName'
+    ) || '';
+
+
+  classData.courseCode =
+    params.get(
+      'courseCode'
+    ) || '';
+
+
+  classData.courseName =
+    params.get(
+      'courseName'
+    ) || '';
+
+
+  classData.room =
+    params.get(
+      'room'
+    ) || '';
+
+
+  /*
+   * แสดงข้อมูล
+   */
+
+  document.getElementById(
+    'teacher'
+  ).textContent =
+    classData.teacherName ||
+    classData.teacherCode ||
+    '-';
+
+
+  document.getElementById(
+    'course'
+  ).textContent =
+    classData.courseName ||
+    classData.courseCode ||
+    '-';
+
+
+  document.getElementById(
+    'room'
+  ).textContent =
+    classData.room ||
+    '-';
+
+
+  startScanner();
+
+}
+
+
+/* =====================================================
+   START CAMERA
+===================================================== */
+
+
+async function startScanner() {
+
+  setStatus(
+    '📷 กำลังเปิดกล้อง...',
+    ''
+  );
+
+
+  try {
+
+    scanner =
+      new Html5Qrcode(
+        'reader'
+      );
+
+
+    const cameras =
+      await Html5Qrcode.getCameras();
+
+
+    if (
+      !cameras ||
+      cameras.length === 0
+    ) {
+
+      throw new Error(
+        'ไม่พบกล้องในอุปกรณ์'
+      );
+
+    }
+
+
+    /*
+     * พยายามเลือกกล้องหลัง
+     */
+
+    let cameraId =
+      cameras[0].id;
+
+
+    const backCamera =
+      cameras.find(
+        camera => {
+
+          const label =
+            (
+              camera.label ||
+              ''
+            ).toLowerCase();
+
+
+          return (
+            label.includes(
+              'back'
+            ) ||
+
+            label.includes(
+              'rear'
+            ) ||
+
+            label.includes(
+              'environment'
+            )
+
+          );
+
+        }
+      );
+
+
+    if (backCamera) {
+
+      cameraId =
+        backCamera.id;
+
+    }
+
+
+    await scanner.start(
+
+      cameraId,
+
+      {
+
+        fps: 10,
+
+        qrbox: function(
+          width,
+          height
+        ) {
+
+          const size =
+            Math.min(
+              width,
+              height
+            ) * 0.72;
+
+
+          return {
+
+            width: size,
+
+            height: size
+
+          };
+
+        },
+
+        aspectRatio: 1.0
+
+      },
+
+      onScanSuccess,
+
+      onScanFailure
+
+    );
+
+
+    scanning = true;
+
+
+    setStatus(
+      '🟢 พร้อมสแกน QR Code',
+      'success'
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    setStatus(
+      '❌ ไม่สามารถเปิดกล้องได้\n' +
+      (
+        error.message ||
+        'กรุณาอนุญาตการใช้กล้อง'
+      ),
+      'error'
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   QR SUCCESS
+===================================================== */
+
+
+function onScanSuccess(
+  decodedText
+) {
+
+  if (
+    processing
+  ) {
+
+    return;
+
+  }
+
+
+  const now =
+    Date.now();
+
+
+  /*
+   * ป้องกัน QR เดิมยิงซ้ำ
+   */
+
+  if (
+
+    decodedText === lastScan &&
+
+    now - lastScanTime < 3000
+
+  ) {
+
+    return;
+
+  }
+
+
+  lastScan =
+    decodedText;
+
+  lastScanTime =
+    now;
+
+
+  processAttendance(
+    decodedText
+  );
+
+}
+
+
+/* =====================================================
+   QR FAILURE
+===================================================== */
+
+
+function onScanFailure(
+  error
+) {
+
+  /*
+   * ไม่ต้องแสดง error
+   * เพราะ scanner จะเรียก function นี้
+   * ขณะยังหา QR ไม่เจอเป็นปกติ
+   */
+
+}
+
+
+/* =====================================================
+   PROCESS ATTENDANCE
+===================================================== */
+
+
+async function processAttendance(
+  qrCode
+) {
+
+  processing = true;
+
+
+  setStatus(
+    '⏳ กำลังตรวจสอบ...',
+    ''
+  );
+
+
+  document.getElementById(
+    'loading'
+  ).classList.add(
+    'show'
+  );
+
+
+  /*
+   * ส่งข้อมูลไป Apps Script
+   */
+
+  try {
+
+    const url =
+      API_URL +
+
+      '?action=checkin' +
+
+      '&callback=attendanceCallback' +
+
+      '&studentId=' +
+      encodeURIComponent(
+        qrCode
+      ) +
+
+      '&teacherCode=' +
+      encodeURIComponent(
+        classData.teacherCode
+      ) +
+
+      '&courseCode=' +
+      encodeURIComponent(
+        classData.courseCode
+      ) +
+
+      '&room=' +
+      encodeURIComponent(
+        classData.room
+      );
+
+
+    /*
+     * JSONP
+     */
+
+    await callJsonp(
+      url
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    processing = false;
+
+
+    document.getElementById(
+      'loading'
+    ).classList.remove(
+      'show'
+    );
+
+
+    setStatus(
+      '❌ ไม่สามารถเชื่อมต่อระบบได้',
+      'error'
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   JSONP
+===================================================== */
+
+
+function callJsonp(
+  url
+) {
+
+  return new Promise(
+    function(
+      resolve,
+      reject
+    ) {
+
+      const script =
+        document.createElement(
+          'script'
+        );
+
+
+      const callbackName =
+        'attendanceCallback';
+
+
+      window[
+        callbackName
+      ] = function(data) {
+
+        cleanup();
+
+        handleAttendanceResult(
+          data
+        );
+
+        resolve(data);
+
+      };
+
+
+      script.src =
+        url;
+
+
+      script.onerror =
+        function() {
+
+          cleanup();
+
+          reject(
+            new Error(
+              'API connection error'
+            )
+          );
+
+        };
+
+
+      document.body.appendChild(
+        script
+      );
+
+
+      function cleanup() {
+
+        try {
+
+          script.remove();
+
+        }
+
+        catch(e) {}
+
+
+        try {
+
+          delete window[
+            callbackName
+          ];
+
+        }
+
+        catch(e) {}
+
+      }
+
+
+      /*
+       * Timeout
+       */
+
+      setTimeout(
+        function() {
+
+          if (
+            document.body.contains(
+              script
+            )
+          ) {
+
+            cleanup();
+
+            reject(
+              new Error(
+                'API timeout'
+              )
+            );
+
+          }
+
+        },
+
+        15000
+
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE RESULT
+===================================================== */
+
+
+function handleAttendanceResult(
+  data
+) {
+
+  processing = false;
+
+
+  document.getElementById(
+    'loading'
+  ).classList.remove(
+    'show'
+  );
+
+
+  if (!data) {
+
+    setStatus(
+      '❌ ระบบไม่ได้ส่งข้อมูลกลับมา',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * SUCCESS
+   */
+
+  if (
+    data.success === true
+  ) {
+
+    showStudent(
+      data
+    );
+
+
+    setStatus(
+      '✅ เช็คชื่อสำเร็จ',
+      'success'
+    );
+
+
+    playSuccessSound();
+
+
+    pauseScanner();
+
+
+    document.getElementById(
+      'scanNext'
+    ).classList.add(
+      'show'
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * DUPLICATE
+   */
+
+  if (
+    data.duplicate === true
+  ) {
+
+    showStudent(
+      data
+    );
+
+
+    setStatus(
+      '⚠️ นักศึกษาคนนี้เช็คชื่อแล้ว\n' +
+      (
+        data.time ||
+        ''
+      ),
+      'warning'
+    );
+
+
+    playWarningSound();
+
+
+    pauseScanner();
+
+
+    document.getElementById(
+      'scanNext'
+    ).classList.add(
+      'show'
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * ERROR
+   */
+
+  setStatus(
+    '❌ ' +
+    (
+      data.message ||
+      'ไม่สามารถเช็คชื่อได้'
+    ),
+    'error'
+  );
+
+
+  playErrorSound();
+
+
+  /*
+   * ให้กลับมาสแกนต่อ
+   */
+
+  setTimeout(
+    function() {
+
+      processing = false;
+
+      setStatus(
+        '🟢 พร้อมสแกน QR Code',
+        'success'
+      );
+
+    },
+
+    2500
+
+  );
+
+}
+
+
+/* =====================================================
+   SHOW STUDENT
+===================================================== */
+
+
+function showStudent(
+  data
+) {
+
+  const student =
+    data.student ||
+    {};
+
+
+  document.getElementById(
+    'studentName'
+  ).textContent =
+    student.name ||
+    '-';
+
+
+  document.getElementById(
+    'studentId'
+  ).textContent =
+    'รหัส: ' +
+    (
+      student.studentId ||
+      '-'
+    );
+
+
+  document.getElementById(
+    'studentRoom'
+  ).textContent =
+    '🏫 ห้อง ' +
+    (
+      student.room ||
+      '-'
+    );
+
+
+  document.getElementById(
+    'attendanceTime'
+  ).textContent =
+    '🕐 ' +
+    (
+      data.time ||
+      '-'
+    );
+
+
+  document.getElementById(
+    'studentCard'
+  ).classList.add(
+    'show'
+  );
+
+}
+
+
+/* =====================================================
+   PAUSE SCANNER
+===================================================== */
+
+
+async function pauseScanner() {
+
+  if (
+    !scanner ||
+    !scanning
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await scanner.pause(
+      true
+    );
+
+  }
+
+  catch(error) {
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   NEXT STUDENT
+===================================================== */
+
+
+async function scanNext() {
+
+  processing = false;
+
+  lastScan = '';
+
+  lastScanTime = 0;
+
+
+  document.getElementById(
+    'studentCard'
+  ).classList.remove(
+    'show'
+  );
+
+
+  document.getElementById(
+    'scanNext'
+  ).classList.remove(
+    'show'
+  );
+
+
+  setStatus(
+    '🟢 พร้อมสแกน QR Code',
+    'success'
+  );
+
+
+  try {
+
+    if (
+      scanner &&
+      scanning
+    ) {
+
+      await scanner.resume();
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+
+function setStatus(
+  text,
+  type
+) {
+
+  const element =
+    document.getElementById(
+      'status'
+    );
+
+
+  element.textContent =
+    text;
+
+
+  element.className =
+    'status';
+
+
+  if (type) {
+
+    element.classList.add(
+      type
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+
+function playTone(
+  frequency,
+  duration
+) {
+
+  try {
+
+    const AudioContext =
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+
+    const audio =
+      new AudioContext();
+
+
+    const oscillator =
+      audio.createOscillator();
+
+
+    const gain =
+      audio.createGain();
+
+
+    oscillator.connect(
+      gain
+    );
+
+
+    gain.connect(
+      audio.destination
+    );
+
+
+    oscillator.frequency.value =
+      frequency;
+
+
+    oscillator.type =
+      'sine';
+
+
+    gain.gain.value =
+      0.15;
+
+
+    oscillator.start();
+
+
+    setTimeout(
+      function() {
+
+        oscillator.stop();
+
+        audio.close();
+
+      },
+
+      duration
+
+    );
+
+  }
+
+  catch(e) {}
+
+}
+
+
+function playSuccessSound() {
+
+  playTone(
+    880,
+    150
+  );
+
+}
+
+
+function playWarningSound() {
+
+  playTone(
+    500,
+    250
+  );
+
+}
+
+
+function playErrorSound() {
+
+  playTone(
+    220,
+    400
+  );
+
+}
+
+
+</script>
+
+</body>
+
+</html>
